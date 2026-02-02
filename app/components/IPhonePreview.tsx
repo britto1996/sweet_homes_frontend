@@ -2,32 +2,34 @@
 
 import React, { useMemo, useRef } from "react";
 import { animated, to, useSpring } from "@react-spring/web";
+import { useI18n } from "./I18n/I18nProvider";
 
 type Listing = {
-  title: string;
-  meta: string;
-  price: string;
+  titleKey: string;
+  metaKey: string;
+  usdPrice: number;
 };
 
 const listings: Listing[] = [
   {
-    title: "Modern Apartment",
-    meta: "2 bed • 2 bath • 1,120 sqft",
-    price: "$1,650 / mo",
+    titleKey: "preview.listings.modernApartment.title",
+    metaKey: "preview.listings.modernApartment.meta",
+    usdPrice: 1650,
   },
   {
-    title: "Cozy Studio",
-    meta: "Studio • 1 bath • 540 sqft",
-    price: "$980 / mo",
+    titleKey: "preview.listings.cozyStudio.title",
+    metaKey: "preview.listings.cozyStudio.meta",
+    usdPrice: 980,
   },
   {
-    title: "Family Home",
-    meta: "3 bed • 2 bath • 1,860 sqft",
-    price: "$2,250 / mo",
+    titleKey: "preview.listings.familyHome.title",
+    metaKey: "preview.listings.familyHome.meta",
+    usdPrice: 2250,
   },
 ];
 
 export default function IPhonePreview() {
+  const { t, priceFromUsd } = useI18n();
   const frameRef = useRef<HTMLDivElement | null>(null);
 
   const floatSpring = useSpring({
@@ -96,21 +98,21 @@ export default function IPhonePreview() {
               {/* Screen */}
               <div className="relative z-10 px-4 pb-4 pt-11">
                 <div className="flex items-center justify-between">
-                  <div className="text-sm font-semibold">Nearby picks</div>
-                  <div className="badge badge-primary badge-sm">Live</div>
+                  <div className="text-sm font-semibold">{t("preview.nearbyPicks")}</div>
+                  <div className="badge badge-primary badge-sm">{t("preview.live")}</div>
                 </div>
 
                 <div className="mt-3 grid gap-3">
                   {listings.map((item) => (
                     <div
-                      key={item.title}
+                      key={item.titleKey}
                       className="card border border-base-300 bg-base-100 shadow-sm"
                     >
                       <div className="card-body gap-2 p-4">
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <div className="font-semibold leading-tight">{item.title}</div>
-                            <div className="text-xs opacity-70">{item.meta}</div>
+                            <div className="font-semibold leading-tight">{t(item.titleKey)}</div>
+                            <div className="text-xs opacity-70">{t(item.metaKey)}</div>
                           </div>
                           <button className="btn btn-ghost btn-xs" aria-label="Save listing">
                             <svg
@@ -131,10 +133,12 @@ export default function IPhonePreview() {
                           </button>
                         </div>
                         <div className="flex items-center justify-between">
-                          <div className="text-sm font-semibold text-primary">{item.price}</div>
+                          <div className="text-sm font-semibold text-primary">
+                            {priceFromUsd(item.usdPrice)} {t("money.perMonthSuffix")}
+                          </div>
                           <div className="flex gap-1">
-                            <span className="badge badge-outline badge-sm">Tour</span>
-                            <span className="badge badge-outline badge-sm">Map</span>
+                            <span className="badge badge-outline badge-sm">{t("preview.filters.tour")}</span>
+                            <span className="badge badge-outline badge-sm">{t("preview.filters.map")}</span>
                           </div>
                         </div>
                       </div>
@@ -144,14 +148,14 @@ export default function IPhonePreview() {
 
                 <div className="mt-4 rounded-2xl bg-base-100 p-4 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <div className="text-sm font-semibold">One-tap filters</div>
-                    <div className="text-xs opacity-70">Updated now</div>
+                    <div className="text-sm font-semibold">{t("preview.oneTapFilters")}</div>
+                    <div className="text-xs opacity-70">{t("preview.updatedNow")}</div>
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
-                    <span className="badge badge-primary badge-sm">Pet friendly</span>
-                    <span className="badge badge-ghost badge-sm">Furnished</span>
-                    <span className="badge badge-ghost badge-sm">Parking</span>
-                    <span className="badge badge-ghost badge-sm">Gym</span>
+                    <span className="badge badge-primary badge-sm">{t("preview.filters.petFriendly")}</span>
+                    <span className="badge badge-ghost badge-sm">{t("preview.filters.furnished")}</span>
+                    <span className="badge badge-ghost badge-sm">{t("preview.filters.parking")}</span>
+                    <span className="badge badge-ghost badge-sm">{t("preview.filters.gym")}</span>
                   </div>
                 </div>
 
@@ -171,15 +175,15 @@ export default function IPhonePreview() {
       <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
         <span className="inline-flex items-center gap-2">
           <span className="h-3 w-3 rounded-md bg-success" />
-          No clutter UI
+          {t("preview.badges.noClutter")}
         </span>
         <span className="inline-flex items-center gap-2">
           <span className="h-3 w-3 rounded-md bg-primary" />
-          Fast shortlist
+          {t("preview.badges.fastShortlist")}
         </span>
         <span className="inline-flex items-center gap-2">
           <span className="h-3 w-3 rounded-md bg-info" />
-          Mobile-first
+          {t("preview.badges.mobileFirst")}
         </span>
       </div>
     </div>

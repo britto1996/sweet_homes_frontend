@@ -1,0 +1,149 @@
+{
+  "brand": {
+    "name": "SweetHomes",
+    "tagline": "Find your next place"
+  },
+  "nav": {
+    "features": "Features",
+    "listings": "Listings",
+    "reviews": "Reviews"
+  },
+  "actions": {
+    "login": "Log in",
+    "getStarted": "Get started",
+    "search": "Search",
+    "seeHow": "See how it works",
+    "browseAll": "Browse all",
+    "view": "View",
+    "startSearching": "Start searching",
+    "contact": "Contact",
+    "viewListings": "View listings"
+  },
+  "hero": {
+    "badgeNew": "New",
+    "badgeText": "Smart search + instant shortlists",
+    "title": "Discover beautiful homes in minutes.",
+    "subtitle": "Search, compare, and save listings with a clean, fast interface built for real people.",
+    "searchPlaceholder": "City, neighborhood, or ZIP",
+    "chips": {
+      "apartments": "Apartments",
+      "villas": "Villas",
+      "studios": "Studios",
+      "nearMetro": "Near metro"
+    },
+    "stats": {
+      "activeValue": "10k+",
+      "activeListings": "Active listings",
+      "ratingValue": "4.9",
+      "avgRating": "Avg. rating",
+      "shortlistValue": "2 min",
+      "toShortlist": "To shortlist"
+    }
+  },
+  "preview": {
+    "nearbyPicks": "Nearby picks",
+    "live": "Live",
+    "oneTapFilters": "One-tap filters",
+    "updatedNow": "Updated now",
+    "filters": {
+      "petFriendly": "Pet friendly",
+      "furnished": "Furnished",
+      "parking": "Parking",
+      "gym": "Gym",
+      "tour": "Tour",
+      "map": "Map"
+    },
+    "badges": {
+      "noClutter": "No clutter UI",
+      "fastShortlist": "Fast shortlist",
+      "mobileFirst": "Mobile-first"
+    },
+    "listings": {
+      "modernApartment": {
+        "title": "Modern Apartment",
+        "meta": "2 bed • 2 bath • 1,120 sqft"
+      },
+      "cozyStudio": {
+        "title": "Cozy Studio",
+        "meta": "Studio • 1 bath • 540 sqft"
+      },
+      "familyHome": {
+        "title": "Family Home",
+        "meta": "3 bed • 2 bath • 1,860 sqft"
+      }
+    }
+  },
+  "sections": {
+    "features": {
+      "title": "Everything you need to pick faster",
+      "subtitle": "A clean landing experience with modern cards, smooth hierarchy, and clear calls to action.",
+      "cards": {
+        "smartSearch": {
+          "title": "Smart search",
+          "desc": "Find homes by area, price, and lifestyle filters — quickly."
+        },
+        "shortlistShare": {
+          "title": "Shortlist & share",
+          "desc": "Save favorites and send them to friends in seconds."
+        },
+        "tourReady": {
+          "title": "Tour-ready",
+          "desc": "Everything important at a glance: price, specs, and next steps."
+        }
+      }
+    },
+    "trending": {
+      "title": "Trending listings",
+      "featured": "Featured",
+      "cards": {
+        "sunsetLoft": {
+          "name": "Sunset Loft",
+          "tag": "Downtown"
+        },
+        "gardenHouse": {
+          "name": "Garden House",
+          "tag": "Quiet area"
+        },
+        "cityStudio": {
+          "name": "City Studio",
+          "tag": "Near metro"
+        }
+      }
+    },
+    "testimonials": {
+      "title": "People love the simplicity",
+      "subtitle": "A landing experience that feels premium without being heavy.",
+      "quotes": {
+        "a": {
+          "quote": "The UI is clean and fast — I shortlisted 6 places in 5 minutes.",
+          "name": "Ayesha",
+          "role": "Renter"
+        },
+        "b": {
+          "quote": "Filters are exactly where I expect them. No confusion.",
+          "name": "Omar",
+          "role": "Buyer"
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to find your next home?",
+      "subtitle": "Start with a search and build a shortlist you can trust."
+    }
+  },
+  "footer": {
+    "copyright": "All rights reserved."
+  },
+  "money": {
+    "perMonthSuffix": "/mo"
+  },
+  "translator": {
+    "title": "Language & currency",
+    "language": "Language",
+    "currency": "Currency",
+    "english": "English",
+    "arabic": "Arabic",
+    "usd": "USD ($)",
+    "aed": "AED (د.إ)"
+  }
+}
