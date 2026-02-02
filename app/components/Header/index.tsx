@@ -1,13 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import React from "react";
 import { PATHS } from "@/constants/path";
 import { useI18n } from "../I18n/I18nProvider";
 import { useWishlist } from "../Wishlist/WishlistProvider";
+import { useAuth } from "../Auth/AuthProvider";
 
 const Header = () => {
   const { locale, currency, setLocale, setCurrency, t } = useI18n();
   const { count: wishlistCount } = useWishlist();
+  const { user, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-base-200/70 bg-base-100/70 backdrop-blur">
@@ -143,13 +146,49 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Desktop auth buttons */}
-          <button className="btn btn-ghost btn-sm hidden md:inline-flex">
-            {t("actions.login")}
-          </button>
-          <button className="btn btn-primary btn-sm hidden md:inline-flex">
-            {t("actions.getStarted")}
-          </button>
+          {/* Desktop auth */}
+          {user ? (
+            <div className="dropdown dropdown-end hidden md:inline-flex">
+              <button className="btn btn-ghost btn-sm" type="button" tabIndex={0} aria-label={t("auth.account")} title={t("auth.account")}>
+                <span className="max-w-48 truncate">{user.email}</span>
+                <span className="badge badge-outline badge-sm ml-2">{t(user.role === "buyer" ? "auth.buyer" : "auth.seller")}</span>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  className="ml-1 opacity-70"
+                >
+                  <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              <div tabIndex={0} className="dropdown-content z-60 mt-2 w-72 rounded-2xl border border-base-200 bg-base-100 p-2 shadow-xl">
+                <div className="px-2 py-2 text-xs font-semibold opacity-70">{t("auth.signedInAs")}</div>
+                <div className="px-2 pb-2 text-sm">
+                  <div className="font-medium truncate">{user.email}</div>
+                  <div className="mt-1 text-xs opacity-70">{t("auth.role")}: {t(user.role === "buyer" ? "auth.buyer" : "auth.seller")}</div>
+                </div>
+
+                <div className="divider my-1" />
+
+                <button className="btn btn-ghost btn-sm w-full justify-start" type="button" onClick={logout}>
+                  {t("actions.logout")}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <Link className="btn btn-ghost btn-sm hidden md:inline-flex" href={PATHS.login}>
+                {t("actions.login")}
+              </Link>
+              <button className="btn btn-primary btn-sm hidden md:inline-flex" type="button">
+                {t("actions.getStarted")}
+              </button>
+            </>
+          )}
 
           {/* Mobile menu */}
           <div className="dropdown dropdown-end md:hidden">
@@ -214,18 +253,30 @@ const Header = () => {
 
               <div className="divider my-1" />
 
-              <button
-                className="btn btn-ghost btn-sm w-full justify-start"
-                type="button"
-              >
-                {t("actions.login")}
-              </button>
-              <button
-                className="btn btn-primary btn-sm w-full justify-start"
-                type="button"
-              >
-                {t("actions.getStarted")}
-              </button>
+              {user ? (
+                <button
+                  className="btn btn-ghost btn-sm w-full justify-start"
+                  type="button"
+                  onClick={logout}
+                >
+                  {t("actions.logout")}
+                </button>
+              ) : (
+                <Link
+                  className="btn btn-ghost btn-sm w-full justify-start"
+                  href={PATHS.login}
+                >
+                  {t("actions.login")}
+                </Link>
+              )}
+              {!user ? (
+                <button
+                  className="btn btn-primary btn-sm w-full justify-start"
+                  type="button"
+                >
+                  {t("actions.getStarted")}
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

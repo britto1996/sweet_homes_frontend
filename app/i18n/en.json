@@ -12,6 +12,7 @@
   },
   "actions": {
     "login": "Log in",
+    "logout": "Log out",
     "getStarted": "Get started",
     "search": "Search",
     "seeHow": "See how it works",
@@ -24,6 +25,45 @@
     "viewListings": "View listings",
     "close": "Close",
     "send": "Send"
+  },
+  "auth": {
+    "account": "Account",
+    "signedInAs": "Signed in as",
+    "loginTitle": "Log in",
+    "loginSubtitle": "Use your email and password to continue. (Demo)",
+    "noAccount": "Don’t have an account?",
+    "signUp": "Sign Up",
+    "signupMock": "Sign up is not wired yet (demo).",
+
+    "email": "Email",
+    "emailPlaceholder": "you@example.com",
+
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordMock": "Forgot password is not wired yet (demo).",
+
+    "role": "Buyer / Seller",
+    "buyer": "Buyer",
+    "seller": "Seller",
+
+    "passwordHint": "Use 8+ characters with uppercase, lowercase, a number, and a symbol (no spaces).",
+    "passwordStrong": "Strong",
+    "passwordNotStrong": "Not strong",
+
+    "loggingIn": "Logging in…",
+    "mockHint": "Mock users: buyer@sweethomes.test or seller@sweethomes.test • Password: SweetHomes@123",
+
+    "errors": {
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Password is required.",
+      "passwordWeak": "Password must be strong (8+ chars, upper/lowercase, number, symbol, no spaces).",
+      "invalidCredentials": "Invalid email/password/role."
+    }
   },
   "listings": {
     "title": "Browse all projects",

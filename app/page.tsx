@@ -7,14 +7,19 @@ import { useI18n } from "./components/I18n/I18nProvider";
 import Link from "next/link";
 import { PATHS } from "@/constants/path";
 import { PROPERTIES } from "./data/properties";
+import { useAuth } from "./components/Auth/AuthProvider";
 
 export default function Home() {
   const { t, priceFromUsd } = useI18n();
+  const { user } = useAuth();
 
-  const trendingDubai = PROPERTIES.filter((p) => p.country === "UAE" && p.city.en === "Dubai" && p.status === "available").slice(0, 3);
+  const trendingDubai = PROPERTIES.filter(
+    (p) =>
+      p.country === "UAE" && p.city.en === "Dubai" && p.status === "available",
+  ).slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-base-100 text-base-content">
+    <div className="min-h-screen bg-base-100 text-base-content z-0">
       {/* Hero */}
       <main>
         <section className="sweethomes-hero relative overflow-hidden">
@@ -28,7 +33,9 @@ export default function Home() {
             <Reveal delayMs={40} threshold={0.05}>
               <div className="relative">
                 <div className="inline-flex items-center gap-2 rounded-full border border-base-200 bg-base-100/70 px-3 py-1 text-xs backdrop-blur">
-                  <span className="badge badge-primary badge-sm">{t("hero.badgeNew")}</span>
+                  <span className="badge badge-primary badge-sm">
+                    {t("hero.badgeNew")}
+                  </span>
                   <span className="opacity-80">{t("hero.badgeText")}</span>
                 </div>
 
@@ -64,28 +71,50 @@ export default function Home() {
                       aria-label="Search location"
                     />
                   </label>
-                  <button className="btn btn-primary">{t("actions.search")}</button>
+                  <button className="btn btn-primary">
+                    {t("actions.search")}
+                  </button>
                 </div>
 
                 <div className="mt-6 flex flex-wrap gap-2">
-                  <span className="badge badge-outline">{t("hero.chips.apartments")}</span>
-                  <span className="badge badge-outline">{t("hero.chips.villas")}</span>
-                  <span className="badge badge-outline">{t("hero.chips.studios")}</span>
-                  <span className="badge badge-outline">{t("hero.chips.nearMetro")}</span>
+                  <span className="badge badge-outline">
+                    {t("hero.chips.apartments")}
+                  </span>
+                  <span className="badge badge-outline">
+                    {t("hero.chips.villas")}
+                  </span>
+                  <span className="badge badge-outline">
+                    {t("hero.chips.studios")}
+                  </span>
+                  <span className="badge badge-outline">
+                    {t("hero.chips.nearMetro")}
+                  </span>
                 </div>
 
                 <div className="mt-8 grid grid-cols-3 gap-3">
                   <div className="rounded-2xl border border-base-200 bg-base-100/70 p-4 backdrop-blur">
-                    <div className="text-lg font-semibold">{t("hero.stats.activeValue")}</div>
-                    <div className="text-xs opacity-70">{t("hero.stats.activeListings")}</div>
+                    <div className="text-lg font-semibold">
+                      {t("hero.stats.activeValue")}
+                    </div>
+                    <div className="text-xs opacity-70">
+                      {t("hero.stats.activeListings")}
+                    </div>
                   </div>
                   <div className="rounded-2xl border border-base-200 bg-base-100/70 p-4 backdrop-blur">
-                    <div className="text-lg font-semibold">{t("hero.stats.ratingValue")}</div>
-                    <div className="text-xs opacity-70">{t("hero.stats.avgRating")}</div>
+                    <div className="text-lg font-semibold">
+                      {t("hero.stats.ratingValue")}
+                    </div>
+                    <div className="text-xs opacity-70">
+                      {t("hero.stats.avgRating")}
+                    </div>
                   </div>
                   <div className="rounded-2xl border border-base-200 bg-base-100/70 p-4 backdrop-blur">
-                    <div className="text-lg font-semibold">{t("hero.stats.shortlistValue")}</div>
-                    <div className="text-xs opacity-70">{t("hero.stats.toShortlist")}</div>
+                    <div className="text-lg font-semibold">
+                      {t("hero.stats.shortlistValue")}
+                    </div>
+                    <div className="text-xs opacity-70">
+                      {t("hero.stats.toShortlist")}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -100,15 +129,22 @@ export default function Home() {
 
         {/* Features */}
         <Reveal>
-          <section id="features" className="mx-auto w-full max-w-6xl px-4 py-14">
+          <section
+            id="features"
+            className="mx-auto w-full max-w-6xl px-4 py-14"
+          >
             <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
-                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">{t("sections.features.title")}</h2>
+                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                  {t("sections.features.title")}
+                </h2>
                 <p className="mt-2 max-w-2xl opacity-80">
                   {t("sections.features.subtitle")}
                 </p>
               </div>
-              <button className="btn btn-outline btn-sm self-start md:self-auto">{t("actions.seeHow")}</button>
+              <button className="btn btn-outline btn-sm self-start md:self-auto">
+                {t("actions.seeHow")}
+              </button>
             </div>
 
             <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -182,7 +218,9 @@ export default function Home() {
           <section id="listings" className="bg-base-200/60">
             <div className="mx-auto w-full max-w-6xl px-4 py-14">
               <div className="flex items-center justify-between gap-4">
-                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">{t("sections.trending.title")}</h2>
+                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                  {t("sections.trending.title")}
+                </h2>
                 <Link className="btn btn-primary btn-sm" href={PATHS.listings}>
                   {t("actions.browseAll")}
                 </Link>
@@ -192,7 +230,7 @@ export default function Home() {
                 {trendingDubai.map((p, idx) => (
                   <Reveal key={p.id} delayMs={idx * 90}>
                     <div className="card h-full overflow-hidden bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
-                      <figure className="relative aspect-[16/10] w-full bg-base-200">
+                      <figure className="relative aspect-16/10 w-full bg-base-200">
                         <Image
                           src={p.images[0] ?? "/apartments/apartment-1.svg"}
                           alt={p.name.en}
@@ -200,23 +238,33 @@ export default function Home() {
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-base-100/70 via-transparent to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-t from-base-100/70 via-transparent to-transparent" />
                       </figure>
 
                       <div className="card-body flex h-full flex-col">
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <div className="text-lg font-semibold">{p.name.en}</div>
-                            <div className="text-sm opacity-70">{p.location.en}</div>
+                            <div className="text-lg font-semibold">
+                              {p.name.en}
+                            </div>
+                            <div className="text-sm opacity-70">
+                              {p.location.en}
+                            </div>
                           </div>
-                          <span className="badge badge-outline">{t("sections.trending.featured")}</span>
+                          <span className="badge badge-outline">
+                            {t("sections.trending.featured")}
+                          </span>
                         </div>
 
                         <div className="mt-auto flex items-center justify-between pt-4">
                           <div className="text-primary font-semibold">
-                            {priceFromUsd(p.usdPricePerMonth)} {t("money.perMonthSuffix")}
+                            {priceFromUsd(p.usdPricePerMonth)}{" "}
+                            {t("money.perMonthSuffix")}
                           </div>
-                          <Link className="btn btn-outline btn-sm" href={PATHS.property(p.id)}>
+                          <Link
+                            className="btn btn-outline btn-sm"
+                            href={PATHS.property(p.id)}
+                          >
                             {t("actions.view")}
                           </Link>
                         </div>
@@ -231,16 +279,27 @@ export default function Home() {
 
         {/* Testimonials */}
         <Reveal>
-          <section id="testimonials" className="mx-auto w-full max-w-6xl px-4 py-14">
+          <section
+            id="testimonials"
+            className="mx-auto w-full max-w-6xl px-4 py-14"
+          >
             <div className="grid gap-6 md:grid-cols-2 md:items-center">
               <div>
-                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">{t("sections.testimonials.title")}</h2>
+                <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+                  {t("sections.testimonials.title")}
+                </h2>
                 <p className="mt-2 opacity-80">
                   {t("sections.testimonials.subtitle")}
                 </p>
                 <div className="mt-5 flex gap-2">
-                  <button className="btn btn-primary">{t("actions.startSearching")}</button>
-                  <button className="btn btn-ghost">{t("actions.contact")}</button>
+                  <Link href={PATHS.listings}>
+                    <button className="btn btn-primary">
+                      {t("actions.startSearching")}
+                    </button>
+                  </Link>
+                  <button className="btn btn-ghost">
+                    {t("actions.contact")}
+                  </button>
                 </div>
               </div>
               <div className="grid gap-4">
@@ -262,15 +321,44 @@ export default function Home() {
                         <p className="text-sm opacity-90">“{tItem.quote}”</p>
                         <div className="mt-3 flex items-center justify-between">
                           <div>
-                            <div className="text-sm font-semibold">{tItem.name}</div>
-                            <div className="text-xs opacity-70">{tItem.role}</div>
+                            <div className="text-sm font-semibold">
+                              {tItem.name}
+                            </div>
+                            <div className="text-xs opacity-70">
+                              {tItem.role}
+                            </div>
                           </div>
                           <div className="rating rating-sm">
-                            <input type="radio" className="mask mask-star-2 bg-warning" readOnly checked />
-                            <input type="radio" className="mask mask-star-2 bg-warning" readOnly checked />
-                            <input type="radio" className="mask mask-star-2 bg-warning" readOnly checked />
-                            <input type="radio" className="mask mask-star-2 bg-warning" readOnly checked />
-                            <input type="radio" className="mask mask-star-2 bg-warning" readOnly checked />
+                            <input
+                              type="radio"
+                              className="mask mask-star-2 bg-warning"
+                              readOnly
+                              checked
+                            />
+                            <input
+                              type="radio"
+                              className="mask mask-star-2 bg-warning"
+                              readOnly
+                              checked
+                            />
+                            <input
+                              type="radio"
+                              className="mask mask-star-2 bg-warning"
+                              readOnly
+                              checked
+                            />
+                            <input
+                              type="radio"
+                              className="mask mask-star-2 bg-warning"
+                              readOnly
+                              checked
+                            />
+                            <input
+                              type="radio"
+                              className="mask mask-star-2 bg-warning"
+                              readOnly
+                              checked
+                            />
                           </div>
                         </div>
                       </div>
@@ -288,12 +376,24 @@ export default function Home() {
             <div className="rounded-3xl border border-base-200 bg-linear-to-br from-primary/10 via-base-100 to-accent/10 p-8 md:p-10">
               <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h3 className="text-xl font-semibold tracking-tight md:text-2xl">{t("sections.cta.title")}</h3>
-                  <p className="mt-2 opacity-80">{t("sections.cta.subtitle")}</p>
+                  <h3 className="text-xl font-semibold tracking-tight md:text-2xl">
+                    {t("sections.cta.title")}
+                  </h3>
+                  <p className="mt-2 opacity-80">
+                    {t("sections.cta.subtitle")}
+                  </p>
                 </div>
                 <div className="flex gap-2">
-                  <button className="btn btn-primary">{t("actions.getStarted")}</button>
-                  <button className="btn btn-outline">{t("actions.viewListings")}</button>
+                  {!user ? (
+                    <button className="btn btn-primary" type="button">
+                      {t("actions.getStarted")}
+                    </button>
+                  ) : null}
+                  <Link href={PATHS.listings}>
+                    <button className="btn btn-outline">
+                      {t("actions.viewListings")}
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -305,7 +405,8 @@ export default function Home() {
       <footer className="border-t border-base-200 bg-base-100">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-10 md:flex-row md:items-center md:justify-between">
           <div className="text-sm opacity-70">
-            © {new Date().getFullYear()} {t("brand.name")}. {t("footer.copyright")}
+            © {new Date().getFullYear()} {t("brand.name")}.{" "}
+            {t("footer.copyright")}
           </div>
           <div className="flex flex-wrap gap-4 text-sm">
             <a className="link-hover opacity-70" href="#features">

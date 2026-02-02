@@ -11,10 +11,12 @@
   "dependencies": {
     "@react-spring/web": "^10.0.3",
     "axios": "^1.13.4",
+    "formik": "^2.4.9",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "yarn": "^1.22.22"
+    "yarn": "^1.22.22",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

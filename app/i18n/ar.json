@@ -12,6 +12,7 @@
   },
   "actions": {
     "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
     "getStarted": "ابدأ الآن",
     "search": "بحث",
     "seeHow": "شاهد كيف يعمل",
@@ -24,6 +25,45 @@
     "viewListings": "عرض العقارات",
     "close": "إغلاق",
     "send": "إرسال"
+  },
+  "auth": {
+    "account": "الحساب",
+    "signedInAs": "تم تسجيل الدخول باسم",
+    "loginTitle": "تسجيل الدخول",
+    "loginSubtitle": "استخدم بريدك الإلكتروني وكلمة المرور للمتابعة. (تجريبي)",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "إنشاء حساب",
+    "signupMock": "إنشاء الحساب غير متصل بعد (تجريبي).",
+
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "you@example.com",
+
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "forgotPasswordMock": "استعادة كلمة المرور غير متصلة بعد (تجريبي).",
+
+    "role": "مشتري / بائع",
+    "buyer": "مشتري",
+    "seller": "بائع",
+
+    "passwordHint": "استخدم 8+ أحرف مع حرف كبير وصغير ورقم ورمز (بدون مسافات).",
+    "passwordStrong": "قوية",
+    "passwordNotStrong": "غير قوية",
+
+    "loggingIn": "جارٍ تسجيل الدخول…",
+    "mockHint": "مستخدمون تجريبيون: buyer@sweethomes.test أو seller@sweethomes.test • كلمة المرور: SweetHomes@123",
+
+    "errors": {
+      "emailRequired": "البريد الإلكتروني مطلوب.",
+      "emailInvalid": "أدخل بريداً إلكترونياً صحيحاً.",
+      "passwordRequired": "كلمة المرور مطلوبة.",
+      "passwordWeak": "يجب أن تكون كلمة المرور قوية (8+، حرف كبير/صغير، رقم، رمز، بدون مسافات).",
+      "invalidCredentials": "بيانات الدخول/الدور غير صحيحة."
+    }
   },
   "listings": {
     "title": "تصفح جميع المشاريع",
