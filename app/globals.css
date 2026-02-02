@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: sweethomes --default, dark --prefersdark;
+}
+
+@plugin "daisyui/theme" {
+  name: "sweethomes";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* Base */
+  --color-base-100: #ffffff;
+  --color-base-200: #f6f7fb;
+  --color-base-300: #e9ecf5;
+  --color-base-content: #111827;
+
+  /* Brand */
+  --color-primary: #F63049;
+  --color-primary-content: #ffffff;
+  --color-secondary: #D02752;
+  --color-secondary-content: #ffffff;
+  --color-accent: #14b8a6;
+  --color-accent-content: #042f2e;
+
+  /* UI */
+  --color-neutral: #1f2937;
+  --color-neutral-content: #f9fafb;
+  --color-info: #0ea5e9;
+  --color-info-content: #082f49;
+  --color-success: #22C55E;
+  --color-success-content: #052e16;
+  --color-warning: #FBBF24;
+  --color-warning-content: #451a03;
+  --color-error: #740A03;
+  --color-error-content: #ffffff;
+
+  /* Radius */
+  --radius-box: 0.75rem;
+  --radius-field: 0.5rem;
+  --radius-selector: 0.75rem;
+
+}
