@@ -1,18 +1,20 @@
 "use client";
 
-import Header from "./components/Header";
+import Image from "next/image";
 import Reveal from "./components/Animations/Reveal";
 import IPhonePreview from "./components/IPhonePreview";
 import { useI18n } from "./components/I18n/I18nProvider";
+import Link from "next/link";
+import { PATHS } from "@/constants/path";
+import { PROPERTIES } from "./data/properties";
 
 export default function Home() {
   const { t, priceFromUsd } = useI18n();
 
+  const trendingDubai = PROPERTIES.filter((p) => p.country === "UAE" && p.city.en === "Dubai" && p.status === "available").slice(0, 3);
+
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
-      {/* Top nav */}
-      <Header />
-
       {/* Hero */}
       <main>
         <section className="sweethomes-hero relative overflow-hidden">
@@ -181,31 +183,42 @@ export default function Home() {
             <div className="mx-auto w-full max-w-6xl px-4 py-14">
               <div className="flex items-center justify-between gap-4">
                 <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">{t("sections.trending.title")}</h2>
-                <button className="btn btn-primary btn-sm">{t("actions.browseAll")}</button>
+                <Link className="btn btn-primary btn-sm" href={PATHS.listings}>
+                  {t("actions.browseAll")}
+                </Link>
               </div>
 
               <div className="mt-8 grid gap-4 md:grid-cols-3">
-                {[
-                  { name: t("sections.trending.cards.sunsetLoft.name"), tag: t("sections.trending.cards.sunsetLoft.tag"), usd: 1420 },
-                  { name: t("sections.trending.cards.gardenHouse.name"), tag: t("sections.trending.cards.gardenHouse.tag"), usd: 2080 },
-                  { name: t("sections.trending.cards.cityStudio.name"), tag: t("sections.trending.cards.cityStudio.tag"), usd: 990 },
-                ].map((c, idx) => (
-                  <Reveal key={c.name} delayMs={idx * 90}>
-                    <div className="card bg-base-100 shadow-sm">
-                      <div className="card-body">
+                {trendingDubai.map((p, idx) => (
+                  <Reveal key={p.id} delayMs={idx * 90}>
+                    <div className="card h-full overflow-hidden bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+                      <figure className="relative aspect-[16/10] w-full bg-base-200">
+                        <Image
+                          src={p.images[0] ?? "/apartments/apartment-1.svg"}
+                          alt={p.name.en}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-base-100/70 via-transparent to-transparent" />
+                      </figure>
+
+                      <div className="card-body flex h-full flex-col">
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <div className="text-lg font-semibold">{c.name}</div>
-                            <div className="text-sm opacity-70">{c.tag}</div>
+                            <div className="text-lg font-semibold">{p.name.en}</div>
+                            <div className="text-sm opacity-70">{p.location.en}</div>
                           </div>
                           <span className="badge badge-outline">{t("sections.trending.featured")}</span>
                         </div>
 
-                        <div className="mt-4 flex items-center justify-between">
+                        <div className="mt-auto flex items-center justify-between pt-4">
                           <div className="text-primary font-semibold">
-                            {priceFromUsd(c.usd)} {t("money.perMonthSuffix")}
+                            {priceFromUsd(p.usdPricePerMonth)} {t("money.perMonthSuffix")}
                           </div>
-                          <button className="btn btn-outline btn-sm">{t("actions.view")}</button>
+                          <Link className="btn btn-outline btn-sm" href={PATHS.property(p.id)}>
+                            {t("actions.view")}
+                          </Link>
                         </div>
                       </div>
                     </div>

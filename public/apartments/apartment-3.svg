@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#071827"/>
+      <stop offset="1" stop-color="#0A2233"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#38BDF8" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#22C55E" stop-opacity="0.12"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="20"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#bg)"/>
+
+  <rect x="0" y="520" width="1200" height="280" fill="url(#sea)"/>
+  <path d="M0 560 C 220 520, 380 640, 640 590 C 880 545, 1010 610, 1200 560 L1200 800 L0 800 Z" fill="#06111D" opacity="0.7"/>
+
+  <circle cx="210" cy="170" r="140" fill="#A855F7" opacity="0.18" filter="url(#soft)"/>
+  <circle cx="990" cy="220" r="160" fill="#38BDF8" opacity="0.18" filter="url(#soft)"/>
+
+  <rect x="380" y="170" width="440" height="430" rx="50" fill="#0B1220" opacity="0.55" stroke="#2B3A55" stroke-width="2"/>
+  <rect x="410" y="200" width="380" height="370" rx="44" fill="#7EE1FF" opacity="0.10"/>
+
+  <g fill="#D5E6FF" opacity="0.22">
+    <g transform="translate(445,235)">
+      <rect width="42" height="28" rx="7"/>
+      <rect x="70" width="42" height="28" rx="7"/>
+      <rect x="140" width="42" height="28" rx="7"/>
+      <rect x="210" width="42" height="28" rx="7"/>
+    </g>
+    <g transform="translate(445,290)">
+      <rect width="42" height="28" rx="7"/>
+      <rect x="70" width="42" height="28" rx="7"/>
+      <rect x="140" width="42" height="28" rx="7"/>
+      <rect x="210" width="42" height="28" rx="7"/>
+    </g>
+    <g transform="translate(445,345)">
+      <rect width="42" height="28" rx="7"/>
+      <rect x="70" width="42" height="28" rx="7"/>
+      <rect x="140" width="42" height="28" rx="7"/>
+      <rect x="210" width="42" height="28" rx="7"/>
+    </g>
+  </g>
+
+  <g opacity="0.85">
+    <rect x="70" y="70" width="250" height="54" rx="27" fill="#0B0F18" opacity="0.55" stroke="#2B3A55" stroke-width="1"/>
+    <text x="110" y="105" font-family="ui-sans-serif, system-ui, -apple-system" font-size="18" fill="#E6F4FF" opacity="0.92">Palm</text>
+  </g>
+</svg>

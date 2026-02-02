@@ -6,7 +6,9 @@
   "nav": {
     "features": "Features",
     "listings": "Listings",
-    "reviews": "Reviews"
+    "reviews": "Reviews",
+    "cart": "Cart",
+    "wishlist": "Wishlist"
   },
   "actions": {
     "login": "Log in",
@@ -15,9 +17,182 @@
     "seeHow": "See how it works",
     "browseAll": "Browse all",
     "view": "View",
+    "back": "Back",
+    "backToListings": "Back to listings",
     "startSearching": "Start searching",
     "contact": "Contact",
-    "viewListings": "View listings"
+    "viewListings": "View listings",
+    "close": "Close",
+    "send": "Send"
+  },
+  "listings": {
+    "title": "Browse all projects",
+    "subtitle": "View all projects, including future building projects.",
+    "results": "results",
+    "autoLoading": "Auto-loading…"
+  },
+  "filters": {
+    "title": "Filters",
+    "name": "Filter by name",
+    "searchPlaceholder": "Search Dubai Marina, Palm, Miami...",
+    "minPrice": "Min price (USD)",
+    "maxPrice": "Max price (USD)",
+    "country": "Country",
+    "projectType": "Project type",
+    "all": "All",
+    "uae": "UAE",
+    "us": "US",
+    "clear": "Clear filters"
+  },
+  "listing": {
+    "status": {
+      "available": "Available",
+      "future": "Future"
+    },
+    "thumbnail": "Thumbnail"
+  },
+  "pagination": {
+    "prev": "Prev",
+    "next": "Next"
+  },
+  "cart": {
+    "title": "Cart",
+    "add": "Add to cart",
+    "buyNow": "Buy now",
+    "empty": "Your cart is empty.",
+    "browse": "Browse listings",
+    "remove": "Remove",
+    "summary": "Summary",
+    "total": "Total",
+    "checkout": "Checkout",
+    "clear": "Clear cart",
+    "qty": "Qty:",
+    "checkoutComplete": "Checkout complete (demo)."
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "empty": "Your wishlist is empty.",
+    "clear": "Clear wishlist",
+    "add": "Add to wishlist",
+    "remove": "Remove"
+  },
+  "planner": {
+    "title": "Trip planner",
+    "subtitle": "Pick your current location, tap an apartment, and explore routes + nearby places in Google Maps.",
+    "startPoint": "Start point",
+    "yourLocation": "Your current location",
+    "defaultLocation": "Default (Dubai)",
+    "useMyLocation": "Use my location",
+    "startTracking": "Track me",
+    "stopTracking": "Stop tracking",
+    "trackingOn": "Live tracking on",
+    "locating": "Locating…",
+    "locationDeniedTitle": "Location permission denied",
+    "locationDeniedBody": "Enable location in your browser settings, or enter coordinates manually.",
+    "locationUnsupportedTitle": "Geolocation not supported",
+    "locationUnsupportedBody": "Your browser doesn’t support geolocation. Enter coordinates manually.",
+    "locationErrorTitle": "Couldn’t get location",
+    "locationErrorBody": "Try again, or enter coordinates manually.",
+    "manualEntry": "Manual coordinates",
+
+    "travelMode": "Travel mode",
+    "modes": {
+      "careem": "Careem (cab)",
+      "metro": "Metro"
+    },
+    "walking": "Walk",
+    "openMap": "Open map",
+    "modeHint": "Opens Google Maps UI with live distances, routes, and nearby places.",
+
+    "clickApartmentHint": "Tap an apartment to open Google Maps directions and nearby places.",
+    "selectedApartment": "Selected apartment",
+    "distanceApprox": "Approx distance:",
+    "distanceToApartment": "Distance",
+
+    "nearbyTitle": "Nearby places",
+    "nearbyHint": "These open Google Maps search near the apartment (attractions, hospitals, shops, rentals, and more).",
+    "categories": {
+      "attractions": "Attractions",
+      "hospitals": "Hospitals",
+      "pharmacies": "Pharmacies",
+      "shops": "Shops",
+      "supermarkets": "Supermarkets",
+      "carRentals": "Car rentals",
+      "restaurants": "Restaurants",
+      "cafes": "Cafes",
+      "parks": "Parks"
+    },
+
+    "timeOfDay": "Time of day",
+    "offPeak": "Off‑peak",
+    "peak": "Peak",
+
+    "pickApartments": "Pick apartments",
+    "searchPlaceholder": "Search Dubai Marina, Palm, Miami…",
+    "selected": "Selected",
+    "clearSelection": "Clear",
+    "quickPickDubai": "Quick pick (Dubai)",
+
+    "compute": "Optimize route",
+    "routeSummary": "Route summary",
+    "stop": "Stop",
+    "eta": "ETA",
+    "min": "min",
+    "openOnline": "Open online",
+    "tip": "Tip: Select 3–8 apartments for best results, then tap ‘Optimize route’.",
+
+    "tsp": "TSP optimized",
+    "algorithm": "Algorithm:",
+    "algorithms": {
+      "exact": "Exact",
+      "fast": "Fast"
+    }
+  },
+  "property": {
+    "notFound": "Property not found.",
+    "price": "Price",
+    "call": "Call",
+    "enquire": "Enquire",
+    "map": {
+      "title": "Trip planner (Google Maps)",
+      "subtitle": "See routes from your current location and explore nearby places.",
+      "directions": "Directions",
+      "nearby": "Nearby",
+      "note": "If the embedded map is blocked by your browser, use the ‘Open online’ button."
+    },
+    "facilities": "Facilities",
+    "reviews": "Reviews",
+    "noReviews": "No reviews yet (future project)."
+  },
+  "enquire": {
+    "title": "Enquire",
+    "subtitle": "We’ll get back to you. (Demo form — wire to backend later.)",
+    "name": "Your name",
+    "email": "Email",
+    "message": "Message"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "addedToCart": "Added to cart.",
+    "goToCart": "Go to cart",
+    "continue": "Continue browsing"
+  },
+  "facilities": {
+    "metro": "Metro",
+    "parking": "Parking",
+    "gym": "Gym",
+    "pool": "Pool",
+    "security": "Security",
+    "petFriendly": "Pet friendly",
+    "seaView": "Sea view",
+    "smartHome": "Smart home",
+    "park": "Park",
+    "school": "School"
+  },
+  "units": {
+    "bedShort": "bd",
+    "bathShort": "ba",
+    "sqft": "sqft"
   },
   "hero": {
     "badgeNew": "New",
@@ -135,7 +310,8 @@
     "copyright": "All rights reserved."
   },
   "money": {
-    "perMonthSuffix": "/mo"
+    "perMonthSuffix": "/mo",
+    "convertedHint": "(Converted when AED is selected)"
   },
   "translator": {
     "title": "Language & currency",

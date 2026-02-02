@@ -6,7 +6,9 @@
   "nav": {
     "features": "المميزات",
     "listings": "العقارات",
-    "reviews": "التقييمات"
+    "reviews": "التقييمات",
+    "cart": "السلة",
+    "wishlist": "المفضلة"
   },
   "actions": {
     "login": "تسجيل الدخول",
@@ -15,9 +17,182 @@
     "seeHow": "شاهد كيف يعمل",
     "browseAll": "عرض الكل",
     "view": "عرض",
+    "back": "رجوع",
+    "backToListings": "العودة إلى العقارات",
     "startSearching": "ابدأ البحث",
     "contact": "تواصل معنا",
-    "viewListings": "عرض العقارات"
+    "viewListings": "عرض العقارات",
+    "close": "إغلاق",
+    "send": "إرسال"
+  },
+  "listings": {
+    "title": "تصفح جميع المشاريع",
+    "subtitle": "اعرض جميع المشاريع، بما فيها المشاريع المستقبلية.",
+    "results": "نتائج",
+    "autoLoading": "جاري التحميل تلقائياً…"
+  },
+  "filters": {
+    "title": "الفلاتر",
+    "name": "تصفية حسب الاسم",
+    "searchPlaceholder": "ابحث: دبي مارينا، نخلة جميرا، ميامي...",
+    "minPrice": "أقل سعر (USD)",
+    "maxPrice": "أعلى سعر (USD)",
+    "country": "الدولة",
+    "projectType": "نوع المشروع",
+    "all": "الكل",
+    "uae": "الإمارات",
+    "us": "أمريكا",
+    "clear": "مسح الفلاتر"
+  },
+  "listing": {
+    "status": {
+      "available": "متاح",
+      "future": "مستقبلي"
+    },
+    "thumbnail": "صورة مصغرة"
+  },
+  "pagination": {
+    "prev": "السابق",
+    "next": "التالي"
+  },
+  "cart": {
+    "title": "السلة",
+    "add": "أضف إلى السلة",
+    "buyNow": "اشترِ الآن",
+    "empty": "سلتك فارغة.",
+    "browse": "تصفح العقارات",
+    "remove": "إزالة",
+    "summary": "الملخص",
+    "total": "الإجمالي",
+    "checkout": "الدفع",
+    "clear": "مسح السلة",
+    "qty": "الكمية:",
+    "checkoutComplete": "تم إكمال الدفع (عرض تجريبي)."
+  },
+  "wishlist": {
+    "title": "المفضلة",
+    "empty": "قائمة المفضلة فارغة.",
+    "clear": "مسح المفضلة",
+    "add": "أضف إلى المفضلة",
+    "remove": "إزالة"
+  },
+  "planner": {
+    "title": "مخطط الرحلة",
+    "subtitle": "اختر موقعك الحالي، اضغط على عقار، ثم استكشف المسارات والأماكن القريبة في خرائط Google.",
+    "startPoint": "نقطة البداية",
+    "yourLocation": "موقعك الحالي",
+    "defaultLocation": "افتراضي (دبي)",
+    "useMyLocation": "استخدم موقعي",
+    "startTracking": "تتبعني",
+    "stopTracking": "إيقاف التتبع",
+    "trackingOn": "التتبع المباشر مفعل",
+    "locating": "جارٍ تحديد الموقع…",
+    "locationDeniedTitle": "تم رفض إذن الموقع",
+    "locationDeniedBody": "فعّل إذن الموقع من إعدادات المتصفح، أو أدخل الإحداثيات يدوياً.",
+    "locationUnsupportedTitle": "الموقع غير مدعوم",
+    "locationUnsupportedBody": "متصفحك لا يدعم تحديد الموقع. أدخل الإحداثيات يدوياً.",
+    "locationErrorTitle": "تعذر الحصول على الموقع",
+    "locationErrorBody": "حاول مرة أخرى، أو أدخل الإحداثيات يدوياً.",
+    "manualEntry": "إحداثيات يدوية",
+
+    "travelMode": "طريقة التنقل",
+    "modes": {
+      "careem": "كريم (تاكسي)",
+      "metro": "المترو"
+    },
+    "walking": "مشي",
+    "openMap": "افتح الخريطة",
+    "modeHint": "يفتح واجهة خرائط Google مع المسارات والمسافات والأماكن القريبة.",
+
+    "clickApartmentHint": "اضغط على عقار لفتح الاتجاهات والأماكن القريبة في خرائط Google.",
+    "selectedApartment": "العقار المحدد",
+    "distanceApprox": "المسافة التقريبية:",
+    "distanceToApartment": "المسافة",
+
+    "nearbyTitle": "أماكن قريبة",
+    "nearbyHint": "تفتح هذه الأزرار بحث خرائط Google بالقرب من العقار (معالم، مستشفيات، محلات، تأجير سيارات وغيرها).",
+    "categories": {
+      "attractions": "معالم سياحية",
+      "hospitals": "مستشفيات",
+      "pharmacies": "صيدليات",
+      "shops": "محلات",
+      "supermarkets": "سوبرماركت",
+      "carRentals": "تأجير سيارات",
+      "restaurants": "مطاعم",
+      "cafes": "مقاهي",
+      "parks": "حدائق"
+    },
+
+    "timeOfDay": "وقت اليوم",
+    "offPeak": "خارج الذروة",
+    "peak": "وقت الذروة",
+
+    "pickApartments": "اختر العقارات",
+    "searchPlaceholder": "ابحث: دبي مارينا، نخلة جميرا، ميامي…",
+    "selected": "المحدد",
+    "clearSelection": "مسح",
+    "quickPickDubai": "اختيار سريع (دبي)",
+
+    "compute": "تحسين المسار",
+    "routeSummary": "ملخص المسار",
+    "stop": "توقف",
+    "eta": "الوقت المتوقع",
+    "min": "دقيقة",
+    "openOnline": "افتح عبر الإنترنت",
+    "tip": "نصيحة: اختر 3–8 عقارات للحصول على أفضل نتيجة، ثم اضغط ‘تحسين المسار’.",
+
+    "tsp": "محسّن بـ TSP",
+    "algorithm": "الخوارزمية:",
+    "algorithms": {
+      "exact": "دقيقة",
+      "fast": "سريعة"
+    }
+  },
+  "property": {
+    "notFound": "لم يتم العثور على العقار.",
+    "price": "السعر",
+    "call": "اتصال",
+    "enquire": "استفسار",
+    "map": {
+      "title": "مخطط الرحلة (خرائط Google)",
+      "subtitle": "اعرض المسارات من موقعك الحالي واستكشف الأماكن القريبة.",
+      "directions": "الاتجاهات",
+      "nearby": "بالقرب",
+      "note": "إذا تم حظر الخريطة المضمنة، استخدم زر ‘افتح عبر الإنترنت’."
+    },
+    "facilities": "المرافق",
+    "reviews": "التقييمات",
+    "noReviews": "لا توجد تقييمات بعد (مشروع مستقبلي)."
+  },
+  "enquire": {
+    "title": "استفسار",
+    "subtitle": "سنتواصل معك قريباً. (نموذج تجريبي — اربطه بالخادم لاحقاً.)",
+    "name": "اسمك",
+    "email": "البريد الإلكتروني",
+    "message": "رسالتك"
+  },
+  "checkout": {
+    "title": "الدفع",
+    "addedToCart": "تمت الإضافة إلى السلة.",
+    "goToCart": "اذهب إلى السلة",
+    "continue": "متابعة التصفح"
+  },
+  "facilities": {
+    "metro": "مترو",
+    "parking": "موقف",
+    "gym": "نادي رياضي",
+    "pool": "مسبح",
+    "security": "أمن",
+    "petFriendly": "مناسب للحيوانات",
+    "seaView": "إطلالة بحرية",
+    "smartHome": "منزل ذكي",
+    "park": "حديقة",
+    "school": "مدرسة"
+  },
+  "units": {
+    "bedShort": "غرف",
+    "bathShort": "حمام",
+    "sqft": "قدم²"
   },
   "hero": {
     "badgeNew": "جديد",
@@ -135,7 +310,8 @@
     "copyright": "جميع الحقوق محفوظة."
   },
   "money": {
-    "perMonthSuffix": "/شهر"
+    "perMonthSuffix": "/شهر",
+    "convertedHint": "(يتم التحويل عند اختيار الدرهم)"
   },
   "translator": {
     "title": "اللغة والعملة",
