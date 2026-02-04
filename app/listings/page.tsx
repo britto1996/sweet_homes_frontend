@@ -61,13 +61,18 @@ function FiltersPanel({
   updateFilters: (patch: Partial<Filters> | ((prev: Filters) => Filters)) => void;
   t: (path: string) => string;
 }) {
+  const inputBase =
+    "input input-bordered w-full bg-base-100 border-2 border-primary/60 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none";
+  const selectBase =
+    "select select-bordered w-full bg-base-100 border-2 border-primary/60 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none";
+
   return (
     <div className="card border border-base-200 bg-base-100">
       <div className="card-body gap-4">
         <div>
           <div className="text-sm font-semibold">{t("filters.name")}</div>
           <input
-            className="input input-bordered mt-2 w-full"
+            className={`${inputBase} mt-2`}
             placeholder={t("filters.searchPlaceholder")}
             value={filters.q}
             onChange={(e) => updateFilters({ q: e.target.value })}
@@ -78,7 +83,7 @@ function FiltersPanel({
           <div>
             <div className="text-sm font-semibold">{t("filters.minPrice")}</div>
             <input
-              className="input input-bordered mt-2 w-full"
+              className={`${inputBase} mt-2`}
               inputMode="numeric"
               value={filters.minPrice}
               onChange={(e) => updateFilters({ minPrice: e.target.value })}
@@ -88,7 +93,7 @@ function FiltersPanel({
           <div>
             <div className="text-sm font-semibold">{t("filters.maxPrice")}</div>
             <input
-              className="input input-bordered mt-2 w-full"
+              className={`${inputBase} mt-2`}
               inputMode="numeric"
               value={filters.maxPrice}
               onChange={(e) => updateFilters({ maxPrice: e.target.value })}
@@ -100,7 +105,7 @@ function FiltersPanel({
         <div>
           <div className="text-sm font-semibold">{t("filters.country")}</div>
           <select
-            className="select select-bordered mt-2 w-full"
+            className={`${selectBase} mt-2`}
             value={filters.country}
             onChange={(e) => updateFilters({ country: e.target.value as Filters["country"] })}
           >
@@ -113,7 +118,7 @@ function FiltersPanel({
         <div>
           <div className="text-sm font-semibold">{t("filters.projectType")}</div>
           <select
-            className="select select-bordered mt-2 w-full"
+            className={`${selectBase} mt-2`}
             value={filters.status}
             onChange={(e) => updateFilters({ status: e.target.value as Filters["status"] })}
           >
