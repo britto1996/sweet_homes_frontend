@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 
 import Card from "../components/UI/Card";
-import RoleSwitch, { type UserRole } from "../components/UI/RoleSwitch";
 import { useI18n } from "../components/I18n/I18nProvider";
 import { useAuth } from "../components/Auth/AuthProvider";
 import { useReusableFormik } from "../lib/forms/useReusableFormik";
@@ -15,16 +14,17 @@ import { PATHS } from "@/constants/path";
 type Values = {
   email: string;
   password: string;
-  role: UserRole;
+  confirmPassword: string;
 };
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const { t } = useI18n();
-  const { user, login } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
   const schema = useMemo(() => {
     return Yup.object({
@@ -35,22 +35,28 @@ export default function LoginPage() {
       password: Yup.string()
         .required(t("auth.errors.passwordRequired"))
         .matches(strongPasswordRegex(), t("auth.errors.passwordWeak")),
-      role: Yup.mixed<UserRole>().oneOf(["buyer", "seller"]).required(),
+      confirmPassword: Yup.string()
+        .required(t("auth.errors.confirmPasswordRequired"))
+        .oneOf([Yup.ref("password")], t("auth.errors.passwordsDontMatch")),
     });
   }, [t]);
 
   const formik = useReusableFormik<Values>({
-    initialValues: { email: "", password: "", role: "buyer" },
+    initialValues: { email: "", password: "", confirmPassword: "" },
     validationSchema: schema,
     onSubmit: async (values, helpers) => {
-      setAuthError(null);
+      setSubmitMessage(null);
+
       try {
-        await login(values);
+        await new Promise((r) => setTimeout(r, 700));
         helpers.resetForm();
         setShowPassword(false);
-        router.push(PATHS.home);
-      } catch {
-        setAuthError(t("auth.errors.invalidCredentials"));
+        setShowConfirmPassword(false);
+        setSubmitMessage(t("auth.registerMockSuccess"));
+
+        setTimeout(() => {
+          router.push(PATHS.login);
+        }, 700);
       } finally {
         helpers.setSubmitting(false);
       }
@@ -59,11 +65,16 @@ export default function LoginPage() {
 
   const pwdCheck = useMemo(
     () => checkStrongPassword(formik.values.password),
-    [formik.values.password]
+    [formik.values.password],
   );
 
   const emailHasError = Boolean(formik.touched.email && formik.errors.email);
-  const passwordHasError = Boolean(formik.touched.password && formik.errors.password);
+  const passwordHasError = Boolean(
+    formik.touched.password && formik.errors.password,
+  );
+  const confirmPasswordHasError = Boolean(
+    formik.touched.confirmPassword && formik.errors.confirmPassword,
+  );
 
   const inputBase =
     "input input-bordered w-full bg-base-100 border-2 border-primary/60 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none";
@@ -113,13 +124,17 @@ export default function LoginPage() {
           <div className="inline-flex items-center gap-3 rounded-2xl border border-base-200 bg-base-100/70 px-4 py-3 shadow-sm backdrop-blur">
             {brandMark}
             <div className="leading-tight">
-              <div className="text-sm font-semibold tracking-tight">{t("brand.name")}</div>
+              <div className="text-sm font-semibold tracking-tight">
+                {t("brand.name")}
+              </div>
               <div className="text-xs opacity-70">{t("brand.tagline")}</div>
             </div>
           </div>
 
-          <h1 className="mt-6 text-3xl font-semibold tracking-tight">{t("auth.loginTitle")}</h1>
-          <p className="mt-2 opacity-80">{t("auth.loginSubtitle")}</p>
+          <h1 className="mt-6 text-3xl font-semibold tracking-tight">
+            {t("auth.registerTitle")}
+          </h1>
+          <p className="mt-2 opacity-80">{t("auth.registerSubtitle")}</p>
           <div className="mt-4 text-sm opacity-70">{t("auth.mockHint")}</div>
         </div>
 
@@ -129,7 +144,9 @@ export default function LoginPage() {
             <div className="flex items-center gap-3">
               {brandMark}
               <div className="leading-tight">
-                <div className="text-lg font-semibold">{t("auth.loginTitle")}</div>
+                <div className="text-lg font-semibold">
+                  {t("auth.registerTitle")}
+                </div>
                 <div className="text-xs opacity-70">{t("brand.name")}</div>
               </div>
             </div>
@@ -145,13 +162,13 @@ export default function LoginPage() {
           </div>
 
           <div className="text-sm">
-            <span className="opacity-70">{t("auth.noAccount")}</span>{" "}
+            <span className="opacity-70">{t("auth.haveAccount")}</span>{" "}
             <button
               type="button"
               className="link link-primary"
-              onClick={() => router.push(PATHS.register)}
+              onClick={() => router.push(PATHS.login)}
             >
-              {t("auth.signUp")}
+              {t("actions.login")}
             </button>
           </div>
 
@@ -168,7 +185,9 @@ export default function LoginPage() {
                   type="email"
                   className={
                     `${inputBase} pr-10 ` +
-                    (emailHasError ? " input-error border-error focus:border-error focus:ring-error/20" : "")
+                    (emailHasError
+                      ? " input-error border-error focus:border-error focus:ring-error/20"
+                      : "")
                   }
                   placeholder={t("auth.emailPlaceholder")}
                   value={formik.values.email}
@@ -185,25 +204,30 @@ export default function LoginPage() {
                   aria-hidden="true"
                   className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 opacity-60"
                 >
-                  <path d="M4 6h16v12H4V6Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                  <path d="m4 7 8 6 8-6" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                  <path
+                    d="M4 6h16v12H4V6Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="m4 7 8 6 8-6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </div>
 
-              {emailHasError ? <div className="text-xs text-error">{formik.errors.email}</div> : null}
+              {emailHasError ? (
+                <div className="text-xs text-error">{formik.errors.email}</div>
+              ) : null}
             </div>
 
-            {/* Password (bordered + forgot on right) */}
+            {/* Password */}
             <div className="grid gap-1">
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-medium">{t("auth.password")}</div>
-                <button
-                  type="button"
-                  className="link link-primary text-xs"
-                  onClick={() => alert(t("auth.forgotPasswordMock"))}
-                >
-                  {t("auth.forgotPassword")}
-                </button>
               </div>
 
               <div className="relative">
@@ -212,13 +236,15 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   className={
                     `${inputBase} pr-12 ` +
-                    (passwordHasError ? " input-error border-error focus:border-error focus:ring-error/20" : "")
+                    (passwordHasError
+                      ? " input-error border-error focus:border-error focus:ring-error/20"
+                      : "")
                   }
                   placeholder={t("auth.passwordPlaceholder")}
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                 />
                 <button
                   type="button"
@@ -270,43 +296,113 @@ export default function LoginPage() {
 
               <div className="text-xs opacity-70">
                 {t("auth.passwordHint")}
-                <span className={`ml-2 ${pwdCheck.ok ? "text-success" : "text-warning"}`}>
+                <span
+                  className={`ml-2 ${pwdCheck.ok ? "text-success" : "text-warning"}`}
+                >
                   {pwdCheck.ok ? t("auth.passwordStrong") : t("auth.passwordNotStrong")}
                 </span>
               </div>
 
-              {passwordHasError ? <div className="text-xs text-error">{formik.errors.password}</div> : null}
+              {passwordHasError ? (
+                <div className="text-xs text-error">{formik.errors.password}</div>
+              ) : null}
             </div>
 
-            {/* Buyer / Seller */}
+            {/* Confirm Password */}
             <div className="grid gap-1">
-              <div className="rounded-2xl border-2 border-primary/40 overflow-hidden bg-base-100">
-                <div className="bg-primary/5 px-4 py-2 text-sm font-medium">{t("auth.role")}</div>
-                <div className="px-4 py-3">
-                  <RoleSwitch
-                    value={formik.values.role}
-                    onChange={(role) => formik.setFieldValue("role", role)}
-                    labels={{ buyer: t("auth.buyer"), seller: t("auth.seller") }}
-                    showBrandIcon
-                  />
-                </div>
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-sm font-medium">{t("auth.confirmPassword")}</div>
               </div>
+
+              <div className="relative">
+                <input
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  className={
+                    `${inputBase} pr-12 ` +
+                    (confirmPasswordHasError
+                      ? " input-error border-error focus:border-error focus:ring-error/20"
+                      : "")
+                  }
+                  placeholder={t("auth.confirmPasswordPlaceholder")}
+                  value={formik.values.confirmPassword}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  autoComplete="new-password"
+                />
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm absolute right-2 top-1/2 -translate-y-1/2"
+                  onClick={() => setShowConfirmPassword((s) => !s)}
+                  aria-label={showConfirmPassword ? t("auth.hidePassword") : t("auth.showPassword")}
+                  title={showConfirmPassword ? t("auth.hidePassword") : t("auth.showPassword")}
+                >
+                  {showConfirmPassword ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M3 3l18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <path
+                        d="M10.6 10.6a3 3 0 0 0 4.2 4.2"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M9.9 5.2A10.6 10.6 0 0 1 12 5c6.2 0 10 7 10 7a17.7 17.7 0 0 1-3 3.8"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                      <path
+                        d="M6.2 6.2A17.7 17.7 0 0 0 2 12s3.8 7 10 7c1 0 2-.2 3-.5"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path
+                        d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7S2 12 2 12Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
+
+              {confirmPasswordHasError ? (
+                <div className="text-xs text-error">
+                  {formik.errors.confirmPassword}
+                </div>
+              ) : null}
             </div>
 
-            {authError ? <div className="alert alert-error text-sm">{authError}</div> : null}
+            {submitMessage ? (
+              <div className="alert alert-success text-sm">{submitMessage}</div>
+            ) : null}
 
-            <button type="submit" className="btn btn-primary w-full" disabled={formik.isSubmitting}>
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={formik.isSubmitting}
+            >
               {formik.isSubmitting ? (
                 <span className="inline-flex items-center gap-2">
                   <span className="loading loading-spinner loading-sm" />
-                  {t("auth.loggingIn")}
+                  {t("auth.registering")}
                 </span>
               ) : (
-                t("actions.login")
+                t("actions.createAccount")
               )}
             </button>
-
-            <div className="text-xs opacity-60">{t("auth.mockHint")}</div>
           </form>
         </Card>
       </div>

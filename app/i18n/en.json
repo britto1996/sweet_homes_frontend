@@ -14,6 +14,7 @@
     "login": "Log in",
     "logout": "Log out",
     "getStarted": "Get started",
+    "createAccount": "Create account",
     "search": "Search",
     "seeHow": "See how it works",
     "browseAll": "Browse all",
@@ -31,9 +32,14 @@
     "signedInAs": "Signed in as",
     "loginTitle": "Log in",
     "loginSubtitle": "Use your email and password to continue. (Demo)",
+    "registerTitle": "Sign Up",
+    "registerSubtitle": "Create your account to get started. (Demo)",
     "noAccount": "Don’t have an account?",
     "signUp": "Sign Up",
-    "signupMock": "Sign up is not wired yet (demo).",
+    "haveAccount": "Already have an account?",
+
+    "registering": "Creating account…",
+    "registerMockSuccess": "Account created (demo). Redirecting to login…",
 
     "email": "Email",
     "emailPlaceholder": "you@example.com",
@@ -42,6 +48,9 @@
     "passwordPlaceholder": "Enter your password",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
+
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
 
     "forgotPassword": "Forgot password?",
     "forgotPasswordMock": "Forgot password is not wired yet (demo).",
@@ -62,6 +71,8 @@
       "emailInvalid": "Enter a valid email address.",
       "passwordRequired": "Password is required.",
       "passwordWeak": "Password must be strong (8+ chars, upper/lowercase, number, symbol, no spaces).",
+      "confirmPasswordRequired": "Confirm password is required.",
+      "passwordsDontMatch": "Passwords do not match.",
       "invalidCredentials": "Invalid email/password/role."
     }
   },

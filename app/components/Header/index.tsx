@@ -184,9 +184,9 @@ const Header = () => {
               <Link className="btn btn-ghost btn-sm hidden md:inline-flex" href={PATHS.login}>
                 {t("actions.login")}
               </Link>
-              <button className="btn btn-primary btn-sm hidden md:inline-flex" type="button">
+              <Link className="btn btn-primary btn-sm hidden md:inline-flex" href={PATHS.register}>
                 {t("actions.getStarted")}
-              </button>
+              </Link>
             </>
           )}
 
@@ -270,12 +270,9 @@ const Header = () => {
                 </Link>
               )}
               {!user ? (
-                <button
-                  className="btn btn-primary btn-sm w-full justify-start"
-                  type="button"
-                >
+                <Link className="btn btn-primary btn-sm w-full justify-start" href={PATHS.register}>
                   {t("actions.getStarted")}
-                </button>
+                </Link>
               ) : null}
             </div>
           </div>

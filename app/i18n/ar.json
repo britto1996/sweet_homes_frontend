@@ -14,6 +14,7 @@
     "login": "تسجيل الدخول",
     "logout": "تسجيل الخروج",
     "getStarted": "ابدأ الآن",
+    "createAccount": "إنشاء حساب",
     "search": "بحث",
     "seeHow": "شاهد كيف يعمل",
     "browseAll": "عرض الكل",
@@ -31,9 +32,14 @@
     "signedInAs": "تم تسجيل الدخول باسم",
     "loginTitle": "تسجيل الدخول",
     "loginSubtitle": "استخدم بريدك الإلكتروني وكلمة المرور للمتابعة. (تجريبي)",
+    "registerTitle": "إنشاء حساب",
+    "registerSubtitle": "أنشئ حسابك للبدء. (تجريبي)",
     "noAccount": "ليس لديك حساب؟",
     "signUp": "إنشاء حساب",
-    "signupMock": "إنشاء الحساب غير متصل بعد (تجريبي).",
+    "haveAccount": "لديك حساب بالفعل؟",
+
+    "registering": "جارٍ إنشاء الحساب…",
+    "registerMockSuccess": "تم إنشاء الحساب (تجريبي). جارٍ تحويلك لتسجيل الدخول…",
 
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "you@example.com",
@@ -42,6 +48,9 @@
     "passwordPlaceholder": "أدخل كلمة المرور",
     "showPassword": "إظهار كلمة المرور",
     "hidePassword": "إخفاء كلمة المرور",
+
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
 
     "forgotPassword": "نسيت كلمة المرور؟",
     "forgotPasswordMock": "استعادة كلمة المرور غير متصلة بعد (تجريبي).",
@@ -62,6 +71,8 @@
       "emailInvalid": "أدخل بريداً إلكترونياً صحيحاً.",
       "passwordRequired": "كلمة المرور مطلوبة.",
       "passwordWeak": "يجب أن تكون كلمة المرور قوية (8+، حرف كبير/صغير، رقم، رمز، بدون مسافات).",
+      "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب.",
+      "passwordsDontMatch": "كلمتا المرور غير متطابقتين.",
       "invalidCredentials": "بيانات الدخول/الدور غير صحيحة."
     }
   },

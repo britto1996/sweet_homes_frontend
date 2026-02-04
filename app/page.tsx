@@ -385,9 +385,9 @@ export default function Home() {
                 </div>
                 <div className="flex gap-2">
                   {!user ? (
-                    <button className="btn btn-primary" type="button">
+                    <Link className="btn btn-primary" href={PATHS.register}>
                       {t("actions.getStarted")}
-                    </button>
+                    </Link>
                   ) : null}
                   <Link href={PATHS.listings}>
                     <button className="btn btn-outline">
