@@ -73,13 +73,13 @@
     "loginTitle": "تسجيل الدخول",
     "loginSubtitle": "استخدم بريدك الإلكتروني وكلمة المرور للمتابعة. (تجريبي)",
     "registerTitle": "إنشاء حساب",
-    "registerSubtitle": "أنشئ حسابك للبدء. (تجريبي)",
+    "registerSubtitle": "أنشئ حسابك للبدء.",
     "noAccount": "ليس لديك حساب؟",
     "signUp": "إنشاء حساب",
     "haveAccount": "لديك حساب بالفعل؟",
 
     "registering": "جارٍ إنشاء الحساب…",
-    "registerMockSuccess": "تم إنشاء الحساب (تجريبي). جارٍ تحويلك لتسجيل الدخول…",
+    "registerMockSuccess": "تم إنشاء الحساب. جارٍ تحويلك…",
 
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "you@example.com",
@@ -113,7 +113,8 @@
       "passwordWeak": "يجب أن تكون كلمة المرور قوية (8+، حرف كبير/صغير، رقم، رمز، بدون مسافات).",
       "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب.",
       "passwordsDontMatch": "كلمتا المرور غير متطابقتين.",
-      "invalidCredentials": "بيانات الدخول/الدور غير صحيحة."
+      "invalidCredentials": "بيانات الدخول/الدور غير صحيحة.",
+      "generic": "حدث خطأ ما. حاول مرة أخرى."
     }
   },
   "listings": {

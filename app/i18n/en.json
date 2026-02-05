@@ -73,13 +73,13 @@
     "loginTitle": "Log in",
     "loginSubtitle": "Use your email and password to continue. (Demo)",
     "registerTitle": "Sign Up",
-    "registerSubtitle": "Create your account to get started. (Demo)",
+    "registerSubtitle": "Create your account to get started.",
     "noAccount": "Don’t have an account?",
     "signUp": "Sign Up",
     "haveAccount": "Already have an account?",
 
     "registering": "Creating account…",
-    "registerMockSuccess": "Account created (demo). Redirecting to login…",
+    "registerMockSuccess": "Account created. Redirecting…",
 
     "email": "Email",
     "emailPlaceholder": "you@example.com",
@@ -113,7 +113,8 @@
       "passwordWeak": "Password must be strong (8+ chars, upper/lowercase, number, symbol, no spaces).",
       "confirmPasswordRequired": "Confirm password is required.",
       "passwordsDontMatch": "Passwords do not match.",
-      "invalidCredentials": "Invalid email/password/role."
+      "invalidCredentials": "Invalid email/password/role.",
+      "generic": "Something went wrong. Please try again."
     }
   },
   "listings": {

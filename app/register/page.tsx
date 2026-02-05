@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import Card from "../components/UI/Card";
 import { useI18n } from "../components/I18n/I18nProvider";
@@ -10,6 +11,7 @@ import { useAuth } from "../components/Auth/AuthProvider";
 import { useReusableFormik } from "../lib/forms/useReusableFormik";
 import { checkStrongPassword, strongPasswordRegex } from "../lib/validation/password";
 import { PATHS } from "@/constants/path";
+import { axiosClient } from "@/app/lib/http/axiosClient";
 
 type Values = {
   email: string;
@@ -25,6 +27,7 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const schema = useMemo(() => {
     return Yup.object({
@@ -46,17 +49,31 @@ export default function RegisterPage() {
     validationSchema: schema,
     onSubmit: async (values, helpers) => {
       setSubmitMessage(null);
+      setSubmitError(null);
 
       try {
-        await new Promise((r) => setTimeout(r, 700));
+        await axiosClient.post(
+          "/auth/signup",
+          {
+            email: values.email.trim(),
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+          },
+          { timeout: 15000 }
+        );
         helpers.resetForm();
         setShowPassword(false);
         setShowConfirmPassword(false);
         setSubmitMessage(t("auth.registerMockSuccess"));
-
-        setTimeout(() => {
-          router.push(PATHS.login);
-        }, 700);
+        setTimeout(() => router.push(PATHS.home), 400);
+      } catch (err: unknown) {
+        if (axios.isAxiosError(err)) {
+          const apiMessage = (err.response?.data as { message?: unknown } | undefined)?.message;
+          const msg = typeof apiMessage === "string" && apiMessage.trim() ? apiMessage : err.message;
+          setSubmitError(msg || t("auth.errors.generic"));
+        } else {
+          setSubmitError(t("auth.errors.generic"));
+        }
       } finally {
         helpers.setSubmitting(false);
       }
@@ -135,7 +152,6 @@ export default function RegisterPage() {
             {t("auth.registerTitle")}
           </h1>
           <p className="mt-2 opacity-80">{t("auth.registerSubtitle")}</p>
-          <div className="mt-4 text-sm opacity-70">{t("auth.mockHint")}</div>
         </div>
 
         {/* Right: Form */}
@@ -385,8 +401,34 @@ export default function RegisterPage() {
               ) : null}
             </div>
 
+            {submitError ? (
+              <div role="alert" className="alert alert-error">
+                <span className="text-sm">{submitError}</span>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => setSubmitError(null)}
+                  aria-label={t("actions.close")}
+                  title={t("actions.close")}
+                >
+                  ✕
+                </button>
+              </div>
+            ) : null}
+
             {submitMessage ? (
-              <div className="alert alert-success text-sm">{submitMessage}</div>
+              <div role="alert" className="alert alert-success">
+                <span className="text-sm">{submitMessage}</span>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => setSubmitMessage(null)}
+                  aria-label={t("actions.close")}
+                  title={t("actions.close")}
+                >
+                  ✕
+                </button>
+              </div>
             ) : null}
 
             <button
