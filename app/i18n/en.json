@@ -8,7 +8,47 @@
     "listings": "Listings",
     "reviews": "Reviews",
     "cart": "Cart",
-    "wishlist": "Wishlist"
+    "wishlist": "Wishlist",
+    "myProperties": "My properties"
+  },
+  "seller": {
+    "title": "My properties",
+    "subtitle": "Create mock properties as a seller. Stored locally (demo).",
+    "createTitle": "Create property",
+    "listTitle": "Created properties",
+    "empty": "No properties created yet.",
+    "searchPlaceholder": "Search name or description…",
+    "fields": {
+      "name": "Property name",
+      "description": "Property description",
+      "facilities": "Facilities",
+      "price": "Price (USD)",
+      "images": "Property images"
+    },
+    "actions": {
+      "create": "Create",
+      "remove": "Remove",
+      "clearAll": "Clear all"
+    },
+    "errors": {
+      "imagesRequired": "Please upload at least one image.",
+      "imagesMin": "Please upload at least 6 images.",
+      "imagesMax": "You can upload up to 12 images.",
+      "imagesType": "Only image files are supported.",
+      "imagesTooLarge": "One or more images are too large.",
+      "imageReadFailed": "Couldn’t read one of the selected images.",
+      "notSeller": "This page is for sellers only.",
+      "nameRequired": "Property name is required.",
+      "descriptionRequired": "Property description is required.",
+      "priceInvalid": "Enter a valid price (greater than 0)."
+    },
+    "images": {
+      "hint": "Upload at least 6 images (max 12).",
+      "dropHere": "Drag & drop images here",
+      "or": "or",
+      "browse": "Browse",
+      "count": "Images"
+    }
   },
   "actions": {
     "login": "Log in",

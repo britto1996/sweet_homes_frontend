@@ -60,17 +60,37 @@ function safeParseSettings(): { locale: Locale; currency: Currency } {
 }
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const initial = useMemo(() => safeParseSettings(), []);
-  const [locale, setLocaleState] = useState<Locale>(initial.locale);
-  const [currency, setCurrencyState] = useState<Currency>(initial.currency);
+  // Important: don't read localStorage during the initial render.
+  // In Next.js, Client Components can be pre-rendered on the server.
+  // Reading localStorage on the client for initial state can cause hydration mismatches.
+  const [locale, setLocaleState] = useState<Locale>("en");
+  const [currency, setCurrencyState] = useState<Currency>("USD");
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    const load = () => {
+      const next = safeParseSettings();
+      setLocaleState(next.locale);
+      setCurrencyState(next.currency);
+      setHydrated(true);
+    };
+
+    // Defer state update to avoid synchronous setState in effect.
+    if (typeof queueMicrotask === "function") {
+      queueMicrotask(load);
+    } else {
+      void Promise.resolve().then(load);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ locale, currency }));
     } catch {
       // ignore
     }
-  }, [locale, currency]);
+  }, [currency, hydrated, locale]);
 
   useEffect(() => {
     const doc = document.documentElement;

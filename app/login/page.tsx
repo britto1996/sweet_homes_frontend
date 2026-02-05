@@ -45,10 +45,10 @@ export default function LoginPage() {
     onSubmit: async (values, helpers) => {
       setAuthError(null);
       try {
-        await login(values);
+        const nextUser = await login(values);
         helpers.resetForm();
         setShowPassword(false);
-        router.push(PATHS.home);
+        router.push(nextUser.role === "seller" ? PATHS.sellerProperties : PATHS.home);
       } catch {
         setAuthError(t("auth.errors.invalidCredentials"));
       } finally {

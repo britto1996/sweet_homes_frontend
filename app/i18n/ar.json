@@ -8,7 +8,47 @@
     "listings": "العقارات",
     "reviews": "التقييمات",
     "cart": "السلة",
-    "wishlist": "المفضلة"
+    "wishlist": "المفضلة",
+    "myProperties": "عقاراتي"
+  },
+  "seller": {
+    "title": "عقاراتي",
+    "subtitle": "أنشئ عقارات تجريبية كبائع. تُحفظ محلياً (تجريبي).",
+    "createTitle": "إضافة عقار",
+    "listTitle": "العقارات المُضافة",
+    "empty": "لم تتم إضافة أي عقارات بعد.",
+    "searchPlaceholder": "ابحث بالاسم أو الوصف…",
+    "fields": {
+      "name": "اسم العقار",
+      "description": "وصف العقار",
+      "facilities": "المرافق",
+      "price": "السعر (USD)",
+      "images": "صور العقار"
+    },
+    "actions": {
+      "create": "إضافة",
+      "remove": "إزالة",
+      "clearAll": "مسح الكل"
+    },
+    "errors": {
+      "imagesRequired": "يرجى رفع صورة واحدة على الأقل.",
+      "imagesMin": "يرجى رفع 6 صور على الأقل.",
+      "imagesMax": "يمكنك رفع 12 صورة كحد أقصى.",
+      "imagesType": "يتم دعم ملفات الصور فقط.",
+      "imagesTooLarge": "حجم صورة واحدة أو أكثر كبير جداً.",
+      "imageReadFailed": "تعذر قراءة إحدى الصور المحددة.",
+      "notSeller": "هذه الصفحة مخصصة للبائعين فقط.",
+      "nameRequired": "اسم العقار مطلوب.",
+      "descriptionRequired": "وصف العقار مطلوب.",
+      "priceInvalid": "يرجى إدخال سعر صحيح (أكبر من 0)."
+    },
+    "images": {
+      "hint": "ارفع 6 صور على الأقل (حد أقصى 12).",
+      "dropHere": "اسحب وأفلت الصور هنا",
+      "or": "أو",
+      "browse": "اختر الملفات",
+      "count": "الصور"
+    }
   },
   "actions": {
     "login": "تسجيل الدخول",

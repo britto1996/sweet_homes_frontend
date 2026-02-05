@@ -42,6 +42,18 @@ const Header = () => {
         </Link>
 
         <div className="flex items-center gap-2">
+          {/* Seller: My properties */}
+          {user?.role === "seller" ? (
+            <Link
+              href={PATHS.sellerProperties}
+              className="btn btn-ghost btn-sm hidden md:inline-flex"
+              aria-label={t("nav.myProperties")}
+              title={t("nav.myProperties")}
+            >
+              {t("nav.myProperties")}
+            </Link>
+          ) : null}
+
           {/* Desktop wishlist button */}
           <Link
             href={PATHS.wishlist}
@@ -236,6 +248,15 @@ const Header = () => {
               </div>
 
               <div className="divider my-1" />
+
+              {user?.role === "seller" ? (
+                <Link
+                  className="btn btn-ghost btn-sm w-full justify-start"
+                  href={PATHS.sellerProperties}
+                >
+                  {t("nav.myProperties")}
+                </Link>
+              ) : null}
 
               <Link
                 className="btn btn-ghost btn-sm w-full justify-start"

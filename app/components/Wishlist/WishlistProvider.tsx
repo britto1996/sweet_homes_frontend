@@ -30,16 +30,32 @@ function safeParseWishlist(): string[] {
 }
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
-  const initial = useMemo(() => safeParseWishlist(), []);
-  const [ids, setIds] = useState<string[]>(initial);
+  // Don't read localStorage during the initial render; it can cause hydration mismatches.
+  const [ids, setIds] = useState<string[]>([]);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    const load = () => {
+      setIds(safeParseWishlist());
+      setHydrated(true);
+    };
+
+    // Defer state update to avoid synchronous setState in effect.
+    if (typeof queueMicrotask === "function") {
+      queueMicrotask(load);
+    } else {
+      void Promise.resolve().then(load);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
     } catch {
       // ignore
     }
-  }, [ids]);
+  }, [hydrated, ids]);
 
   const add = useCallback((propertyId: string) => {
     setIds((prev) => (prev.includes(propertyId) ? prev : [propertyId, ...prev]));

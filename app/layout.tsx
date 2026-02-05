@@ -6,6 +6,7 @@ import { CartProvider } from "./components/Cart/CartProvider";
 import { WishlistProvider } from "./components/Wishlist/WishlistProvider";
 import { AuthProvider } from "./components/Auth/AuthProvider";
 import Header from "./components/Header";
+import { SellerPropertiesProvider } from "./components/Seller/SellerPropertiesProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,8 +37,10 @@ export default function RootLayout({
           <AuthProvider>
             <CartProvider>
               <WishlistProvider>
-                <Header />
-                {children}
+                <SellerPropertiesProvider>
+                  <Header />
+                  {children}
+                </SellerPropertiesProvider>
               </WishlistProvider>
             </CartProvider>
           </AuthProvider>

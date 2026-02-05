@@ -42,15 +42,32 @@ function safeParseCart(): CartItem[] {
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => safeParseCart());
+  // Don't read localStorage during the initial render; it can cause hydration mismatches.
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    const load = () => {
+      setItems(safeParseCart());
+      setHydrated(true);
+    };
+
+    // Defer state update to avoid synchronous setState in effect.
+    if (typeof queueMicrotask === "function") {
+      queueMicrotask(load);
+    } else {
+      void Promise.resolve().then(load);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {
       // ignore
     }
-  }, [items]);
+  }, [hydrated, items]);
 
   const add = useCallback((propertyId: string, quantity = 1) => {
     setItems((prev) => {

@@ -44,9 +44,26 @@ function safeParseUser(): AuthUser | null {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(() => safeParseUser());
+  // Don't read localStorage during the initial render; it can cause hydration mismatches.
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    const load = () => {
+      setUser(safeParseUser());
+      setHydrated(true);
+    };
+
+    // Defer state update to avoid synchronous setState in effect.
+    if (typeof queueMicrotask === "function") {
+      queueMicrotask(load);
+    } else {
+      void Promise.resolve().then(load);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
     try {
       if (!user) {
         localStorage.removeItem(STORAGE_KEY);
@@ -56,7 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // ignore
     }
-  }, [user]);
+  }, [hydrated, user]);
 
   const login = useCallback(async ({ email, password, role }: LoginInput) => {
     // Simulate API latency
