@@ -1,11 +1,14 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import type { UserRole } from "../UI/RoleSwitch";
+import { axiosClient } from "@/app/lib/http/axiosClient";
 
 export type AuthUser = {
   email: string;
   role: UserRole;
+  token?: string;
 };
 
 type LoginInput = {
@@ -24,11 +27,6 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 const STORAGE_KEY = "sweethomes_auth_v1";
 
-const MOCK_USERS: Array<{ email: string; password: string; role: UserRole }> = [
-  { email: "buyer@sweethomes.test", password: "SweetHomes@123", role: "buyer" },
-  { email: "seller@sweethomes.test", password: "SweetHomes@123", role: "seller" },
-];
-
 function safeParseUser(): AuthUser | null {
   if (typeof window === "undefined") return null;
   try {
@@ -37,7 +35,8 @@ function safeParseUser(): AuthUser | null {
     const parsed = JSON.parse(raw) as Partial<AuthUser>;
     if (typeof parsed.email !== "string") return null;
     if (parsed.role !== "buyer" && parsed.role !== "seller") return null;
-    return { email: parsed.email, role: parsed.role };
+    const token = typeof parsed.token === "string" && parsed.token.trim() ? parsed.token : undefined;
+    return { email: parsed.email, role: parsed.role, token };
   } catch {
     return null;
   }
@@ -76,21 +75,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [hydrated, user]);
 
   const login = useCallback(async ({ email, password, role }: LoginInput) => {
-    // Simulate API latency
-    await new Promise((r) => setTimeout(r, 900));
-
     const normalizedEmail = email.trim().toLowerCase();
-    const match = MOCK_USERS.find(
-      (u) => u.email.toLowerCase() === normalizedEmail && u.password === password && u.role === role
-    );
 
-    if (!match) {
-      throw new Error("INVALID_CREDENTIALS");
+    try {
+      const resp = await axiosClient.post(
+        "/auth/login",
+        { email: normalizedEmail, password, role },
+        { headers: { "Content-Type": "application/json" }, timeout: 15000 }
+      );
+
+      const data = resp.data as unknown;
+      const anyData = (data ?? {}) as Record<string, unknown>;
+
+      const tokenCandidate =
+        (typeof anyData.token === "string" && anyData.token) ||
+        (typeof anyData.accessToken === "string" && anyData.accessToken) ||
+        (typeof anyData.jwt === "string" && anyData.jwt) ||
+        undefined;
+
+      const userCandidate =
+        (typeof anyData.user === "object" && anyData.user !== null ? (anyData.user as Record<string, unknown>) : null) ||
+        (typeof anyData.data === "object" && anyData.data !== null
+          ? ((anyData.data as Record<string, unknown>).user as Record<string, unknown> | undefined) ?? null
+          : null);
+
+      const apiEmail = typeof userCandidate?.email === "string" ? userCandidate.email : undefined;
+      const apiRole = userCandidate?.role === "buyer" || userCandidate?.role === "seller" ? userCandidate.role : undefined;
+
+      const nextUser: AuthUser = {
+        email: (apiEmail ?? normalizedEmail).trim(),
+        role: apiRole ?? role,
+        ...(tokenCandidate ? { token: tokenCandidate } : {}),
+      };
+
+      setUser(nextUser);
+      return nextUser;
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+        if (status === 401 || status === 403) {
+          throw new Error("INVALID_CREDENTIALS");
+        }
+      }
+      throw err instanceof Error ? err : new Error("LOGIN_FAILED");
     }
-
-    const nextUser: AuthUser = { email: match.email, role: match.role };
-    setUser(nextUser);
-    return nextUser;
   }, []);
 
   const logout = useCallback(() => setUser(null), []);

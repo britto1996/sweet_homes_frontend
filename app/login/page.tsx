@@ -9,7 +9,7 @@ import RoleSwitch, { type UserRole } from "../components/UI/RoleSwitch";
 import { useI18n } from "../components/I18n/I18nProvider";
 import { useAuth } from "../components/Auth/AuthProvider";
 import { useReusableFormik } from "../lib/forms/useReusableFormik";
-import { checkStrongPassword, strongPasswordRegex } from "../lib/validation/password";
+import { checkStrongPassword } from "../lib/validation/password";
 import { PATHS } from "@/constants/path";
 
 type Values = {
@@ -33,8 +33,7 @@ export default function LoginPage() {
         .email(t("auth.errors.emailInvalid"))
         .required(t("auth.errors.emailRequired")),
       password: Yup.string()
-        .required(t("auth.errors.passwordRequired"))
-        .matches(strongPasswordRegex(), t("auth.errors.passwordWeak")),
+        .required(t("auth.errors.passwordRequired")),
       role: Yup.mixed<UserRole>().oneOf(["buyer", "seller"]).required(),
     });
   }, [t]);
@@ -120,7 +119,6 @@ export default function LoginPage() {
 
           <h1 className="mt-6 text-3xl font-semibold tracking-tight">{t("auth.loginTitle")}</h1>
           <p className="mt-2 opacity-80">{t("auth.loginSubtitle")}</p>
-          <div className="mt-4 text-sm opacity-70">{t("auth.mockHint")}</div>
         </div>
 
         {/* Right: Form */}
@@ -305,8 +303,6 @@ export default function LoginPage() {
                 t("actions.login")
               )}
             </button>
-
-            <div className="text-xs opacity-60">{t("auth.mockHint")}</div>
           </form>
         </Card>
       </div>

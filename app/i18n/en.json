@@ -71,7 +71,7 @@
     "account": "Account",
     "signedInAs": "Signed in as",
     "loginTitle": "Log in",
-    "loginSubtitle": "Use your email and password to continue. (Demo)",
+    "loginSubtitle": "Use your email and password to continue.",
     "registerTitle": "Sign Up",
     "registerSubtitle": "Create your account to get started.",
     "noAccount": "Don’t have an account?",
