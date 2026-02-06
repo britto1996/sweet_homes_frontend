@@ -11,6 +11,13 @@ export type AuthUser = {
   token?: string;
 };
 
+export type UserProfile = {
+  email: string;
+  role?: UserRole;
+  name?: string;
+  imageUrl?: string;
+};
+
 type LoginInput = {
   email: string;
   password: string;
@@ -19,6 +26,7 @@ type LoginInput = {
 
 type AuthContextValue = {
   user: AuthUser | null;
+  profile: UserProfile | null;
   login: (input: LoginInput) => Promise<AuthUser>;
   logout: () => void;
 };
@@ -45,7 +53,62 @@ function safeParseUser(): AuthUser | null {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Don't read localStorage during the initial render; it can cause hydration mismatches.
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [hydrated, setHydrated] = useState(false);
+
+  const normalizeProfile = useCallback((data: unknown): UserProfile | null => {
+    if (typeof data !== "object" || data === null) return null;
+    const anyData = data as Record<string, unknown>;
+
+    const rootEmail = typeof anyData.email === "string" ? anyData.email.trim() : "";
+    const rootRole = anyData.role === "buyer" || anyData.role === "seller" ? (anyData.role as UserRole) : undefined;
+
+    const userObj = typeof anyData.user === "object" && anyData.user !== null ? (anyData.user as Record<string, unknown>) : null;
+    const dataObj = typeof anyData.data === "object" && anyData.data !== null ? (anyData.data as Record<string, unknown>) : null;
+    const nestedUser =
+      userObj ||
+      (typeof dataObj?.user === "object" && dataObj.user !== null ? (dataObj.user as Record<string, unknown>) : null);
+
+    const nestedEmail = typeof nestedUser?.email === "string" ? (nestedUser.email as string).trim() : "";
+    const nestedRole = nestedUser?.role === "buyer" || nestedUser?.role === "seller" ? (nestedUser.role as UserRole) : undefined;
+
+    const email = rootEmail || nestedEmail;
+    if (!email) return null;
+
+    const name =
+      (typeof anyData.name === "string" && anyData.name.trim() ? (anyData.name as string) : undefined) ??
+      (typeof nestedUser?.name === "string" && (nestedUser.name as string).trim() ? (nestedUser.name as string) : undefined);
+
+    const imageUrl =
+      (typeof anyData.imageUrl === "string" && anyData.imageUrl.trim() ? (anyData.imageUrl as string) : undefined) ??
+      (typeof nestedUser?.imageUrl === "string" && (nestedUser.imageUrl as string).trim()
+        ? (nestedUser.imageUrl as string)
+        : undefined);
+
+    return {
+      email,
+      role: rootRole ?? nestedRole,
+      ...(name ? { name } : {}),
+      ...(imageUrl ? { imageUrl } : {}),
+    };
+  }, []);
+
+  const fetchProfile = useCallback(
+    async (jwt: string) => {
+      const resp = await axiosClient.get("/users/me", {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          Accept: "application/json",
+        },
+        timeout: 15000,
+      });
+
+      const next = normalizeProfile(resp.data);
+      if (next) setProfile(next);
+      return next;
+    },
+    [normalizeProfile]
+  );
 
   useEffect(() => {
     const load = () => {
@@ -109,6 +172,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       };
 
       setUser(nextUser);
+
+      if (tokenCandidate) {
+        void fetchProfile(tokenCandidate).catch(() => {
+          // ignore; user is still considered logged in
+        });
+      }
       return nextUser;
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
@@ -119,11 +188,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
       throw err instanceof Error ? err : new Error("LOGIN_FAILED");
     }
+  }, [fetchProfile]);
+
+  const logout = useCallback(() => {
+    setUser(null);
+    setProfile(null);
   }, []);
 
-  const logout = useCallback(() => setUser(null), []);
-
-  const value = useMemo<AuthContextValue>(() => ({ user, login, logout }), [login, logout, user]);
+  const value = useMemo<AuthContextValue>(() => ({ user, profile, login, logout }), [login, logout, profile, user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

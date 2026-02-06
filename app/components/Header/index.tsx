@@ -10,7 +10,10 @@ import { useAuth } from "../Auth/AuthProvider";
 const Header = () => {
   const { locale, currency, setLocale, setCurrency, t } = useI18n();
   const { count: wishlistCount } = useWishlist();
-  const { user, logout } = useAuth();
+  const { user, profile, logout } = useAuth();
+
+  const displayEmail = profile?.email ?? user?.email;
+  const displayRole = profile?.role ?? user?.role;
 
   return (
     <header className="sticky top-0 z-50 border-b border-base-200/70 bg-base-100/70 backdrop-blur">
@@ -162,8 +165,10 @@ const Header = () => {
           {user ? (
             <div className="dropdown dropdown-end hidden md:inline-flex">
               <button className="btn btn-ghost btn-sm" type="button" tabIndex={0} aria-label={t("auth.account")} title={t("auth.account")}>
-                <span className="max-w-48 truncate">{user.email}</span>
-                <span className="badge badge-outline badge-sm ml-2">{t(user.role === "buyer" ? "auth.buyer" : "auth.seller")}</span>
+                <span className="max-w-48 truncate">{displayEmail}</span>
+                {displayRole ? (
+                  <span className="badge badge-outline badge-sm ml-2">{t(displayRole === "buyer" ? "auth.buyer" : "auth.seller")}</span>
+                ) : null}
                 <svg
                   width="16"
                   height="16"
@@ -180,8 +185,10 @@ const Header = () => {
               <div tabIndex={0} className="dropdown-content z-60 mt-2 w-72 rounded-2xl border border-base-200 bg-base-100 p-2 shadow-xl">
                 <div className="px-2 py-2 text-xs font-semibold opacity-70">{t("auth.signedInAs")}</div>
                 <div className="px-2 pb-2 text-sm">
-                  <div className="font-medium truncate">{user.email}</div>
-                  <div className="mt-1 text-xs opacity-70">{t("auth.role")}: {t(user.role === "buyer" ? "auth.buyer" : "auth.seller")}</div>
+                  <div className="font-medium truncate">{displayEmail}</div>
+                  {displayRole ? (
+                    <div className="mt-1 text-xs opacity-70">{t("auth.role")}: {t(displayRole === "buyer" ? "auth.buyer" : "auth.seller")}</div>
+                  ) : null}
                 </div>
 
                 <div className="divider my-1" />
