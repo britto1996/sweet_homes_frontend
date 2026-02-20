@@ -47,13 +47,19 @@ export type Property = {
 };
 
 const sharedImages = [
-  "/apartments/apartment-1.svg",
+  "/apartments/dubai-marine-skyline.jpg",
   "/apartments/apartment-2.svg",
   "/apartments/apartment-3.svg",
   "/apartments/apartment-4.svg",
   "/apartments/apartment-5.svg",
   "/apartments/apartment-6.svg",
 ];
+
+const propertyImages = [
+  "/apartments/dubai-marine-skyline.jpg",
+  "/apartments/downtown-dubai.jpeg",
+  "/apartments/palm-jumeriah.jpg",
+]
 
 export const PROPERTIES: Property[] = [
   {
@@ -75,7 +81,7 @@ export const PROPERTIES: Property[] = [
       en: "High-floor Marina apartment with sea views, modern finishes, and quick access to the promenade.",
       ar: "شقة في طابق مرتفع بإطلالة بحرية وتشطيبات عصرية مع وصول سريع للممشى.",
     },
-    images: sharedImages,
+    images: propertyImages[0] ? [propertyImages[0]] : [],
     reviews: [
       {
         id: "r1",
@@ -111,7 +117,7 @@ export const PROPERTIES: Property[] = [
       en: "Walkable luxury near Dubai Mall with iconic skyline views and hotel-style amenities.",
       ar: "فخامة قريبة من دبي مول مع إطلالات أيقونية ومرافق على طراز الفنادق.",
     },
-    images: sharedImages,
+    images: propertyImages[1] ? [propertyImages[1]] : [],
     reviews: [
       {
         id: "r3",
@@ -141,7 +147,7 @@ export const PROPERTIES: Property[] = [
       en: "Signature villa with private beach access, spacious living areas, and premium privacy.",
       ar: "فيلا بإمكانية وصول خاص للشاطئ ومساحات واسعة وخصوصية عالية.",
     },
-    images: sharedImages,
+    images: propertyImages[2] ? [propertyImages[2]] : [],
     reviews: [
       {
         id: "r4",
@@ -173,7 +179,7 @@ export const PROPERTIES: Property[] = [
       en: "Upcoming towers with waterfront promenade access and future retail/community hubs.",
       ar: "أبراج قادمة مع ممشى مائي وخدمات مجتمعية وتجارية مستقبلية.",
     },
-    images: sharedImages,
+    images: propertyImages[3] ? [propertyImages[3]] : [],
     reviews: [],
     contactPhone: "+971500000010",
   },
