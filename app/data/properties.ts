@@ -44,6 +44,7 @@ export type Property = {
   images: string[];
   reviews: PropertyReview[];
   contactPhone: string;
+  screenshotImages?: string[]; // Optional field for additional images/screenshots
 };
 
 const sharedImages = [
@@ -55,16 +56,27 @@ const sharedImages = [
   "/apartments/apartment-6.svg",
 ];
 
-const propertyImages = [
-  "/apartments/dubai-marine-skyline.jpg",
-  "/apartments/downtown-dubai.jpeg",
-  "/apartments/palm-jumeriah.jpg",
-]
+const propertyImages = {
+  mainImages: [
+    "/apartments/dubai-marine-skyline.jpg",
+    "/apartments/downtown-dubai.jpeg",
+    "/apartments/palm-jumeriah.jpg",
+  ],
+  imageScreenshots: [
+    "/apartments/dubai-marine-skyline.jpg",
+    "/apartments/dubai-marine-skyline-image01.jpg",
+    "/apartments/dubai-marine-skyline-image02.jpg",
+    "/apartments/downtown-dubai.jpeg"
+  ]
+};
 
 export const PROPERTIES: Property[] = [
   {
     id: "dubai-marina-skyline",
-    name: { en: "Dubai Marina Skyline Apartment", ar: "شقة دبي مارينا - إطلالة أفقية" },
+    name: {
+      en: "Dubai Marina Skyline Apartment",
+      ar: "شقة دبي مارينا - إطلالة أفقية",
+    },
     location: { en: "Dubai Marina", ar: "دبي مارينا" },
     country: "UAE",
     city: { en: "Dubai", ar: "دبي" },
@@ -81,7 +93,8 @@ export const PROPERTIES: Property[] = [
       en: "High-floor Marina apartment with sea views, modern finishes, and quick access to the promenade.",
       ar: "شقة في طابق مرتفع بإطلالة بحرية وتشطيبات عصرية مع وصول سريع للممشى.",
     },
-    images: propertyImages[0] ? [propertyImages[0]] : [],
+    images: propertyImages.mainImages[0] ? [propertyImages.mainImages[0]] : [],
+    screenshotImages: propertyImages.imageScreenshots,
     reviews: [
       {
         id: "r1",
@@ -100,7 +113,10 @@ export const PROPERTIES: Property[] = [
   },
   {
     id: "downtown-burj-view",
-    name: { en: "Downtown Burj View Residence", ar: "سكن وسط المدينة - إطلالة برج" },
+    name: {
+      en: "Downtown Burj View Residence",
+      ar: "سكن وسط المدينة - إطلالة برج",
+    },
     location: { en: "Downtown Dubai", ar: "وسط مدينة دبي" },
     country: "UAE",
     city: { en: "Dubai", ar: "دبي" },
@@ -117,7 +133,8 @@ export const PROPERTIES: Property[] = [
       en: "Walkable luxury near Dubai Mall with iconic skyline views and hotel-style amenities.",
       ar: "فخامة قريبة من دبي مول مع إطلالات أيقونية ومرافق على طراز الفنادق.",
     },
-    images: propertyImages[1] ? [propertyImages[1]] : [],
+    images: propertyImages.mainImages[1] ? [propertyImages.mainImages[1]] : [],
+    screenshotImages: propertyImages.imageScreenshots,
     reviews: [
       {
         id: "r3",
@@ -130,12 +147,15 @@ export const PROPERTIES: Property[] = [
   },
   {
     id: "palm-jumeirah-villa",
-    name: { en: "Palm Jumeirah Signature Villa", ar: "فيلا نخلة جميرا المميزة" },
+    name: {
+      en: "Palm Jumeirah Signature Villa",
+      ar: "فيلا نخلة جميرا المميزة",
+    },
     location: { en: "Palm Jumeirah", ar: "نخلة جميرا" },
     country: "UAE",
     city: { en: "Dubai", ar: "دبي" },
     status: "available",
-    coords: { lat: 25.1124, lng: 55.1390 },
+    coords: { lat: 25.1124, lng: 55.139 },
     usdPricePerMonth: 12500,
     bedrooms: 5,
     bathrooms: 6,
@@ -147,7 +167,8 @@ export const PROPERTIES: Property[] = [
       en: "Signature villa with private beach access, spacious living areas, and premium privacy.",
       ar: "فيلا بإمكانية وصول خاص للشاطئ ومساحات واسعة وخصوصية عالية.",
     },
-    images: propertyImages[2] ? [propertyImages[2]] : [],
+    images: propertyImages.mainImages[2] ? [propertyImages.mainImages[2]] : [],
+    screenshotImages: propertyImages.imageScreenshots,
     reviews: [
       {
         id: "r4",
@@ -162,12 +183,15 @@ export const PROPERTIES: Property[] = [
   // Future (UAE)
   {
     id: "dubai-creek-harbour-future",
-    name: { en: "Dubai Creek Harbour (Future Towers)", ar: "خور دبي (أبراج مستقبلية)" },
+    name: {
+      en: "Dubai Creek Harbour (Future Towers)",
+      ar: "خور دبي (أبراج مستقبلية)",
+    },
     location: { en: "Dubai Creek Harbour", ar: "خور دبي" },
     country: "UAE",
     city: { en: "Dubai", ar: "دبي" },
     status: "future",
-    coords: { lat: 25.2063, lng: 55.3440 },
+    coords: { lat: 25.2063, lng: 55.344 },
     usdPricePerMonth: 2200,
     bedrooms: 2,
     bathrooms: 2,
@@ -179,13 +203,17 @@ export const PROPERTIES: Property[] = [
       en: "Upcoming towers with waterfront promenade access and future retail/community hubs.",
       ar: "أبراج قادمة مع ممشى مائي وخدمات مجتمعية وتجارية مستقبلية.",
     },
-    images: propertyImages[3] ? [propertyImages[3]] : [],
+    images: propertyImages.mainImages[3] ? [propertyImages.mainImages[3]] : [],
+    screenshotImages: propertyImages.imageScreenshots,
     reviews: [],
     contactPhone: "+971500000010",
   },
   {
     id: "expo-city-future",
-    name: { en: "Expo City Residences (Future)", ar: "مساكن إكسبو سيتي (قريباً)" },
+    name: {
+      en: "Expo City Residences (Future)",
+      ar: "مساكن إكسبو سيتي (قريباً)",
+    },
     location: { en: "Expo City Dubai", ar: "إكسبو سيتي دبي" },
     country: "UAE",
     city: { en: "Dubai", ar: "دبي" },
@@ -203,6 +231,7 @@ export const PROPERTIES: Property[] = [
       ar: "منطقة مستدامة ببنية ذكية وتخطيط يركز على المجتمع.",
     },
     images: sharedImages,
+    screenshotImages: propertyImages.imageScreenshots,
     reviews: [],
     contactPhone: "+971500000011",
   },
@@ -228,6 +257,7 @@ export const PROPERTIES: Property[] = [
       ar: "شقة مضيئة قرب الخليج ووسط المدينة. مثالية للعمل ونمط الحياة.",
     },
     images: sharedImages,
+    screenshotImages: propertyImages.imageScreenshots,
     reviews: [
       {
         id: "r5",
@@ -258,6 +288,7 @@ export const PROPERTIES: Property[] = [
       ar: "لوفتات حديثة في حي تقني قابل للمشي مع مساحات مشتركة عصرية.",
     },
     images: sharedImages,
+    screenshotImages: propertyImages.imageScreenshots,
     reviews: [],
     contactPhone: "+15120000001",
   },

@@ -148,23 +148,23 @@ function PropertyCard({ p }: { p: Property }) {
   const location = locale === "ar" ? p.location.ar : p.location.en;
   const city = locale === "ar" ? p.city.ar : p.city.en;
 
-  const imageSrc = p.images[activeImage] ?? p.images[0];
+  const [updateImageSrc, setUpdateImageSrc] = useState(p.images[activeImage] ?? p.images[0]);
   const wished = has(p.id);
 
   return (
     <Reveal>
       <div className="card border border-base-200 bg-base-100 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
         <figure className="relative h-44 w-full bg-base-200">
-          {imageSrc ? (
+          {updateImageSrc ? (
             <>
               <Image
-                src={imageSrc}
+                src={updateImageSrc}
                 alt={name}
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 33vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-base-100/70 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-base-100/70 via-transparent to-transparent" />
             </>
           ) : null}
         </figure>
@@ -182,16 +182,19 @@ function PropertyCard({ p }: { p: Property }) {
             </span>
           </div>
 
-          {p.images.length > 1 ? (
+          {p.screenshotImages && p.screenshotImages.length > 1 ? (
             <div className="flex gap-2">
-              {p.images.slice(0, 4).map((src, idx) => (
+              {p.screenshotImages.slice(0, 4).map((src, idx) => (
                 <button
                   key={src + idx}
                   type="button"
                   className={`relative h-10 w-14 overflow-hidden rounded-xl border transition-all duration-200 hover:-translate-y-0.5 ${
                     idx === activeImage ? "border-primary" : "border-base-200"
                   } bg-base-200`}
-                  onClick={() => setActiveImage(idx)}
+                  onClick={() => {
+                    setUpdateImageSrc(src);
+                    setActiveImage(idx)
+                  }}
                   aria-label={`${t("listing.thumbnail")} ${idx + 1}`}
                 >
                   <Image src={src} alt={name} fill className="object-contain p-2" sizes="56px" />
