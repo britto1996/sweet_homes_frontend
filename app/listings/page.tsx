@@ -182,7 +182,7 @@ function PropertyCard({ p }: { p: Property }) {
             </span>
           </div>
 
-          {p.screenshotImages && p.screenshotImages.length > 1 ? (
+          {p.screenshotImages && p.screenshotImages.length >= 1 ? (
             <div className="flex gap-2">
               {p.screenshotImages.slice(0, 4).map((src, idx) => (
                 <button

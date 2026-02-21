@@ -61,13 +61,48 @@ const propertyImages = {
     "/apartments/dubai-marine-skyline.jpg",
     "/apartments/downtown-dubai.jpeg",
     "/apartments/palm-jumeriah.jpg",
+    "/apartments/dubai-creep-harbor.jpg",
+    "/apartments/expo-city-residence.png",
+    "/apartments/waterside.jpg",
+    "/apartments/austin-techloftUSA.jpg"
   ],
-  imageScreenshots: [
-    "/apartments/dubai-marine-skyline.jpg",
-    "/apartments/dubai-marine-skyline-image01.jpg",
-    "/apartments/dubai-marine-skyline-image02.jpg",
-    "/apartments/downtown-dubai.jpeg"
-  ]
+  imageScreenshots: {
+    dubaiMarina: [
+      "/apartments/dubai-marine-skyline.jpg",
+      "/apartments/dubai-marine-skyline-image01.jpg",
+      "/apartments/dubai-marine-skyline-image02.jpg",
+    ],
+    downTimeDubai: [
+      "/apartments/downtown-dubai.jpeg",
+      "/apartments/downtown-dubai-image01.jpg",
+      "/apartments/downtown-dubai-image02.jpg"
+    ],
+    palmJumeriah: [
+      "/apartments/palm-jumeriah.jpg",
+      "/apartments/palm-jumeriah-image01.jpg",
+      "/apartments/palm-jumeriah-image02.jpeg"
+    ],
+    dubaiCreekHarbor: [
+      "/apartments/dubai-creep-harbor.jpg",
+      "/apartments/dubai-creek-harbor-image01.jpg",
+      "/apartments/dubai-creek-harbor-image02.jpg",
+    ],
+    dubaiExpoCity: [
+      "/apartments/expo-city-residence.png",
+      "/apartments/dubai-expo-city-image01.jpg",
+      "/apartments/dubai-expo-city-image02.jpg"
+    ],
+    baySide: [
+      "/apartments/waterside.jpg",
+      "/apartments/bayside-image01.jpg",
+      "/apartments/bayside-image02.jpg"
+    ],
+    austinTechLoft: [
+      "/apartments/austin-techloftUSA.jpg",
+      "/apartments/austin-techloft-image01.jpg",
+      "/apartments/austin-techloft-image02.jpg"
+    ]
+  },
 };
 
 export const PROPERTIES: Property[] = [
@@ -94,7 +129,7 @@ export const PROPERTIES: Property[] = [
       ar: "شقة في طابق مرتفع بإطلالة بحرية وتشطيبات عصرية مع وصول سريع للممشى.",
     },
     images: propertyImages.mainImages[0] ? [propertyImages.mainImages[0]] : [],
-    screenshotImages: propertyImages.imageScreenshots,
+    screenshotImages: propertyImages.imageScreenshots.dubaiMarina,
     reviews: [
       {
         id: "r1",
@@ -134,7 +169,7 @@ export const PROPERTIES: Property[] = [
       ar: "فخامة قريبة من دبي مول مع إطلالات أيقونية ومرافق على طراز الفنادق.",
     },
     images: propertyImages.mainImages[1] ? [propertyImages.mainImages[1]] : [],
-    screenshotImages: propertyImages.imageScreenshots,
+    screenshotImages: propertyImages.imageScreenshots.downTimeDubai,
     reviews: [
       {
         id: "r3",
@@ -168,7 +203,7 @@ export const PROPERTIES: Property[] = [
       ar: "فيلا بإمكانية وصول خاص للشاطئ ومساحات واسعة وخصوصية عالية.",
     },
     images: propertyImages.mainImages[2] ? [propertyImages.mainImages[2]] : [],
-    screenshotImages: propertyImages.imageScreenshots,
+    screenshotImages: propertyImages.imageScreenshots.palmJumeriah,
     reviews: [
       {
         id: "r4",
@@ -204,7 +239,7 @@ export const PROPERTIES: Property[] = [
       ar: "أبراج قادمة مع ممشى مائي وخدمات مجتمعية وتجارية مستقبلية.",
     },
     images: propertyImages.mainImages[3] ? [propertyImages.mainImages[3]] : [],
-    screenshotImages: propertyImages.imageScreenshots,
+    screenshotImages: propertyImages.imageScreenshots.dubaiCreekHarbor,
     reviews: [],
     contactPhone: "+971500000010",
   },
@@ -230,8 +265,8 @@ export const PROPERTIES: Property[] = [
       en: "Sustainable district living with smart infrastructure and community-first planning.",
       ar: "منطقة مستدامة ببنية ذكية وتخطيط يركز على المجتمع.",
     },
-    images: sharedImages,
-    screenshotImages: propertyImages.imageScreenshots,
+    images: propertyImages.mainImages[4] ? [propertyImages.mainImages[4]] : [],
+    screenshotImages: propertyImages.imageScreenshots.dubaiExpoCity,
     reviews: [],
     contactPhone: "+971500000011",
   },
@@ -256,8 +291,8 @@ export const PROPERTIES: Property[] = [
       en: "Bright condo close to the bay and downtown hotspots. Great for work + lifestyle.",
       ar: "شقة مضيئة قرب الخليج ووسط المدينة. مثالية للعمل ونمط الحياة.",
     },
-    images: sharedImages,
-    screenshotImages: propertyImages.imageScreenshots,
+    images: propertyImages.mainImages[5] ? [propertyImages.mainImages[5]] : [],
+    screenshotImages: propertyImages.imageScreenshots.baySide,
     reviews: [
       {
         id: "r5",
@@ -287,8 +322,8 @@ export const PROPERTIES: Property[] = [
       en: "Future-forward lofts in a walkable tech neighborhood with modern shared spaces.",
       ar: "لوفتات حديثة في حي تقني قابل للمشي مع مساحات مشتركة عصرية.",
     },
-    images: sharedImages,
-    screenshotImages: propertyImages.imageScreenshots,
+    images: propertyImages.mainImages[6] ? [propertyImages.mainImages[6]] : [],
+    screenshotImages: propertyImages.imageScreenshots.austinTechLoft,
     reviews: [],
     contactPhone: "+15120000001",
   },
