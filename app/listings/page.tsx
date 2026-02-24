@@ -5,9 +5,20 @@ import Link from "next/link";
 import Reveal from "../components/Animations/Reveal";
 import { useI18n } from "../components/I18n/I18nProvider";
 import { useWishlist } from "../components/Wishlist/WishlistProvider";
-import { PROPERTIES, Property, PropertyCountry, PropertyStatus } from "../data/properties";
+import {
+  PROPERTIES,
+  Property,
+  PropertyCountry,
+  PropertyStatus,
+} from "../data/properties";
 import { PATHS } from "@/constants/path";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 type Filters = {
   q: string;
@@ -37,15 +48,21 @@ function matchesFilters(p: Property, filters: Filters) {
     p.location.ar.includes(q) ||
     p.city.ar.includes(q);
 
-  const matchesCountry = filters.country === "ALL" ? true : p.country === filters.country;
-  const matchesStatus = filters.status === "ALL" ? true : p.status === filters.status;
+  const matchesCountry =
+    filters.country === "ALL" ? true : p.country === filters.country;
+  const matchesStatus =
+    filters.status === "ALL" ? true : p.status === filters.status;
 
   const min = filters.minPrice ? Number(filters.minPrice) : null;
   const max = filters.maxPrice ? Number(filters.maxPrice) : null;
-  const matchesMin = min == null || !Number.isFinite(min) ? true : p.usdPricePerMonth >= min;
-  const matchesMax = max == null || !Number.isFinite(max) ? true : p.usdPricePerMonth <= max;
+  const matchesMin =
+    min == null || !Number.isFinite(min) ? true : p.usdPricePerMonth >= min;
+  const matchesMax =
+    max == null || !Number.isFinite(max) ? true : p.usdPricePerMonth <= max;
 
-  return matchesQ && matchesCountry && matchesStatus && matchesMin && matchesMax;
+  return (
+    matchesQ && matchesCountry && matchesStatus && matchesMin && matchesMax
+  );
 }
 
 function FacilityPill({ f }: { f: string }) {
@@ -58,7 +75,9 @@ function FiltersPanel({
   t,
 }: {
   filters: Filters;
-  updateFilters: (patch: Partial<Filters> | ((prev: Filters) => Filters)) => void;
+  updateFilters: (
+    patch: Partial<Filters> | ((prev: Filters) => Filters),
+  ) => void;
   t: (path: string) => string;
 }) {
   const inputBase =
@@ -107,7 +126,9 @@ function FiltersPanel({
           <select
             className={`${selectBase} mt-2`}
             value={filters.country}
-            onChange={(e) => updateFilters({ country: e.target.value as Filters["country"] })}
+            onChange={(e) =>
+              updateFilters({ country: e.target.value as Filters["country"] })
+            }
           >
             <option value="ALL">{t("filters.all")}</option>
             <option value="UAE">{t("filters.uae")}</option>
@@ -116,11 +137,15 @@ function FiltersPanel({
         </div>
 
         <div>
-          <div className="text-sm font-semibold">{t("filters.projectType")}</div>
+          <div className="text-sm font-semibold">
+            {t("filters.projectType")}
+          </div>
           <select
             className={`${selectBase} mt-2`}
             value={filters.status}
-            onChange={(e) => updateFilters({ status: e.target.value as Filters["status"] })}
+            onChange={(e) =>
+              updateFilters({ status: e.target.value as Filters["status"] })
+            }
           >
             <option value="ALL">{t("filters.all")}</option>
             <option value="available">{t("listing.status.available")}</option>
@@ -130,7 +155,15 @@ function FiltersPanel({
 
         <button
           className="btn btn-ghost btn-sm"
-          onClick={() => updateFilters({ q: "", country: "ALL", status: "ALL", minPrice: "", maxPrice: "" })}
+          onClick={() =>
+            updateFilters({
+              q: "",
+              country: "ALL",
+              status: "ALL",
+              minPrice: "",
+              maxPrice: "",
+            })
+          }
         >
           {t("filters.clear")}
         </button>
@@ -148,7 +181,9 @@ function PropertyCard({ p }: { p: Property }) {
   const location = locale === "ar" ? p.location.ar : p.location.en;
   const city = locale === "ar" ? p.city.ar : p.city.en;
 
-  const [updateImageSrc, setUpdateImageSrc] = useState(p.images[activeImage] ?? p.images[0]);
+  const [updateImageSrc, setUpdateImageSrc] = useState(
+    p.images[activeImage] ?? p.images[0],
+  );
   const wished = has(p.id);
 
   return (
@@ -177,8 +212,12 @@ function PropertyCard({ p }: { p: Property }) {
                 {location} • {city} • {p.country}
               </div>
             </div>
-            <span className={`badge ${p.status === "future" ? "badge-ghost" : "badge-primary"}`}>
-              {p.status === "future" ? t("listing.status.future") : t("listing.status.available")}
+            <span
+              className={`badge ${p.status === "future" ? "badge-ghost" : "badge-primary"}`}
+            >
+              {p.status === "future"
+                ? t("listing.status.future")
+                : t("listing.status.available")}
             </span>
           </div>
 
@@ -193,20 +232,32 @@ function PropertyCard({ p }: { p: Property }) {
                   } bg-base-200`}
                   onClick={() => {
                     setUpdateImageSrc(src);
-                    setActiveImage(idx)
+                    setActiveImage(idx);
                   }}
                   aria-label={`${t("listing.thumbnail")} ${idx + 1}`}
                 >
-                  <Image src={src} alt={name} fill className="object-contain p-2" sizes="56px" />
+                  <Image
+                    src={src}
+                    alt={name}
+                    fill
+                    className="object-contain p-2"
+                    sizes="56px"
+                  />
                 </button>
               ))}
             </div>
           ) : null}
 
           <div className="flex flex-wrap gap-2">
-            <span className="badge badge-outline">{p.bedrooms} {t("units.bedShort")}</span>
-            <span className="badge badge-outline">{p.bathrooms} {t("units.bathShort")}</span>
-            <span className="badge badge-outline">{p.sqft} {t("units.sqft")}</span>
+            <span className="badge badge-outline">
+              {p.bedrooms} {t("units.bedShort")}
+            </span>
+            <span className="badge badge-outline">
+              {p.bathrooms} {t("units.bathShort")}
+            </span>
+            <span className="badge badge-outline">
+              {p.sqft} {t("units.sqft")}
+            </span>
             <span className="badge badge-outline">★ {p.rating.toFixed(1)}</span>
           </div>
 
@@ -227,7 +278,10 @@ function PropertyCard({ p }: { p: Property }) {
               >
                 {wished ? t("wishlist.remove") : t("wishlist.add")}
               </button>
-              <Link className="btn btn-primary btn-sm" href={PATHS.property(p.id)}>
+              <Link
+                className="btn btn-primary btn-sm"
+                href={PATHS.property(p.id)}
+              >
                 {t("actions.view")}
               </Link>
             </div>
@@ -252,17 +306,23 @@ export default function ListingsPage() {
   const [page, setPage] = useState(1);
   const [mobileCount, setMobileCount] = useState(6);
 
-  const updateFilters = useCallback((patch: Partial<Filters> | ((prev: Filters) => Filters)) => {
-    setFilters((prev) => {
-      const next = typeof patch === "function" ? patch(prev) : { ...prev, ...patch };
-      return next;
-    });
-    // Reset pagination whenever filters are changed by user interaction
-    setPage(1);
-    setMobileCount(6);
-  }, []);
+  const updateFilters = useCallback(
+    (patch: Partial<Filters> | ((prev: Filters) => Filters)) => {
+      setFilters((prev) => {
+        const next =
+          typeof patch === "function" ? patch(prev) : { ...prev, ...patch };
+        return next;
+      });
+      // Reset pagination whenever filters are changed by user interaction
+      setPage(1);
+      setMobileCount(6);
+    },
+    [],
+  );
 
-  const [desktopMode, setDesktopMode] = useState(() => (typeof window === "undefined" ? true : isDesktop()));
+  const [desktopMode, setDesktopMode] = useState(() =>
+    typeof window === "undefined" ? true : isDesktop(),
+  );
   useEffect(() => {
     const mql = window.matchMedia("(min-width: 768px)");
     const handler = () => setDesktopMode(mql.matches);
@@ -296,7 +356,7 @@ export default function ListingsPage() {
         if (!entry?.isIntersecting) return;
         setMobileCount((c) => clampNumber(c + 3, 0, filtered.length));
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(node);
@@ -310,10 +370,15 @@ export default function ListingsPage() {
       <main className="mx-auto w-full max-w-6xl px-4 py-10">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight">{t("listings.title")}</h1>
+            <h1 className="text-3xl font-semibold tracking-tight">
+              {t("listings.title")}
+            </h1>
             <p className="mt-2 opacity-80">{t("listings.subtitle")}</p>
           </div>
-          <Link href={PATHS.home} className="btn btn-ghost btn-sm self-start md:self-auto">
+          <Link
+            href={PATHS.home}
+            className="btn btn-ghost btn-sm self-start md:self-auto"
+          >
             ← {t("actions.back")}
           </Link>
         </div>
@@ -322,20 +387,36 @@ export default function ListingsPage() {
           <div className="md:col-span-4 lg:col-span-3">
             {/* Desktop filters */}
             <div className="hidden md:block">
-              <FiltersPanel filters={filters} updateFilters={updateFilters} t={t} />
+              <FiltersPanel
+                filters={filters}
+                updateFilters={updateFilters}
+                t={t}
+              />
             </div>
 
             {/* Mobile filters accordion */}
             <details className="collapse collapse-arrow border border-base-200 bg-base-100 md:hidden">
-              <summary className="collapse-title text-sm font-semibold">{t("filters.title")}</summary>
+              <summary className="collapse-title text-sm font-semibold">
+                {t("filters.title")}
+              </summary>
               <div className="collapse-content">
-                <FiltersPanel filters={filters} updateFilters={updateFilters} t={t} />
+                <FiltersPanel
+                  filters={filters}
+                  updateFilters={updateFilters}
+                  t={t}
+                />
               </div>
             </details>
           </div>
 
           <div className="md:col-span-8 lg:col-span-9">
-            <div className="flex items-center justify-between">
+            <div className="mt-4 grid gap-4">
+              {items.map((p) => (
+                <PropertyCard key={p.id} p={p} />
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between mt-2">
               <div className="text-sm opacity-70">
                 {filtered.length} {t("listings.results")}
               </div>
@@ -343,7 +424,9 @@ export default function ListingsPage() {
                 <div className="join">
                   <button
                     className="btn btn-sm join-item"
-                    onClick={() => setPage((p) => clampNumber(p - 1, 1, totalPages))}
+                    onClick={() =>
+                      setPage((p) => clampNumber(p - 1, 1, totalPages))
+                    }
                     disabled={page <= 1}
                   >
                     {t("pagination.prev")}
@@ -353,7 +436,9 @@ export default function ListingsPage() {
                   </button>
                   <button
                     className="btn btn-sm join-item"
-                    onClick={() => setPage((p) => clampNumber(p + 1, 1, totalPages))}
+                    onClick={() =>
+                      setPage((p) => clampNumber(p + 1, 1, totalPages))
+                    }
                     disabled={page >= totalPages}
                   >
                     {t("pagination.next")}
@@ -361,20 +446,15 @@ export default function ListingsPage() {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="loading loading-spinner loading-sm opacity-70" aria-hidden="true" />
+                  <span
+                    className="loading loading-spinner loading-sm opacity-70"
+                    aria-hidden="true"
+                  />
                 </div>
               )}
             </div>
 
-            <div className="mt-4 grid gap-4">
-              {items.map((p) => (
-                <PropertyCard key={p.id} p={p} />
-              ))}
-            </div>
-
-            {!desktopMode ? (
-              <div ref={sentinelRef} className="h-10" />
-            ) : null}
+            {!desktopMode ? <div ref={sentinelRef} className="h-10" /> : null}
           </div>
         </div>
       </main>
