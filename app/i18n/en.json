@@ -9,7 +9,8 @@
     "reviews": "Reviews",
     "cart": "Cart",
     "wishlist": "Wishlist",
-    "myProperties": "My properties"
+    "myProperties": "My properties",
+    "viewProfile": "View Profile"
   },
   "seller": {
     "title": "My properties",
@@ -79,7 +80,8 @@
     "haveAccount": "Already have an account?",
 
     "registering": "Creating account…",
-    "registerMockSuccess": "Account created. Redirecting…",
+    "registerSuccess": "Account created! Please verify your email.",
+    "loginSuccess": "Logged in successfully!",
 
     "email": "Email",
     "emailPlaceholder": "you@example.com",
@@ -93,7 +95,6 @@
     "confirmPasswordPlaceholder": "Re-enter your password",
 
     "forgotPassword": "Forgot password?",
-    "forgotPasswordMock": "Forgot password is not wired yet (demo).",
 
     "role": "Buyer / Seller",
     "buyer": "Buyer",
@@ -104,7 +105,42 @@
     "passwordNotStrong": "Not strong",
 
     "loggingIn": "Logging in…",
-    "mockHint": "Mock users: buyer@sweethomes.test or seller@sweethomes.test • Password: SweetHomes@123",
+
+    "otp": {
+      "title": "Verify your email",
+      "subtitle": "Enter the 6-digit code sent to your email address.",
+      "label": "Verification code",
+      "placeholder": "Enter OTP code",
+      "submit": "Verify",
+      "verifying": "Verifying…",
+      "resend": "Resend code",
+      "resending": "Sending…",
+      "resendSuccess": "A new code has been sent.",
+      "success": "Email verified! Redirecting…",
+      "required": "OTP code is required.",
+      "minLength": "OTP must be at least 4 characters."
+    },
+
+    "forgotPasswordTitle": "Reset password",
+    "forgotPasswordSubtitle": "Enter your email to receive a reset code.",
+    "sendOtp": "Send OTP",
+    "sendingOtp": "Sending…",
+    "otpSent": "OTP sent! Check your email.",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter new password",
+    "resetPassword": "Reset password",
+    "resettingPassword": "Resetting…",
+    "resetPasswordSuccess": "Password reset successfully. Please log in.",
+
+    "profile": {
+      "title": "My Profile",
+      "id": "User ID",
+      "email": "Email",
+      "role": "Role",
+      "verified": "Status",
+      "createdAt": "Member since",
+      "edit": "Edit profile"
+    },
 
     "errors": {
       "emailRequired": "Email is required.",
@@ -113,7 +149,9 @@
       "passwordWeak": "Password must be strong (8+ chars, upper/lowercase, number, symbol, no spaces).",
       "confirmPasswordRequired": "Confirm password is required.",
       "passwordsDontMatch": "Passwords do not match.",
-      "invalidCredentials": "Invalid email/password/role.",
+      "invalidCredentials": "Invalid email or password.",
+      "otpRequired": "OTP code is required.",
+      "newPasswordRequired": "New password is required.",
       "generic": "Something went wrong. Please try again."
     }
   },

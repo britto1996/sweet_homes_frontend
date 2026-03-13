@@ -6,34 +6,76 @@ import type { UserRole } from "../UI/RoleSwitch";
 import { axiosClient } from "@/app/lib/http/axiosClient";
 
 export type AuthUser = {
+  id?: string;
   email: string;
-  role: UserRole;
+  role?: UserRole | "user";
+  verified?: string;
   token?: string;
+  createdAt?: number;
+  updatedAt?: number;
 };
 
 export type UserProfile = {
+  id?: string;
   email: string;
-  role?: UserRole;
+  role?: UserRole | "user";
+  verified?: string;
   name?: string;
   imageUrl?: string;
+  createdAt?: number;
+  updatedAt?: number;
 };
 
 type LoginInput = {
   email: string;
   password: string;
-  role: UserRole;
+};
+
+type LoginResult = {
+  requiresOtp: boolean;
+  userId?: string;
+  email: string;
 };
 
 type AuthContextValue = {
   user: AuthUser | null;
   profile: UserProfile | null;
-  login: (input: LoginInput) => Promise<AuthUser>;
+  login: (input: LoginInput) => Promise<LoginResult>;
   logout: () => void;
+  refreshProfile: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 const STORAGE_KEY = "sweethomes_auth_v1";
+export const TOKEN_KEY = "sweethomes_token_v1";
+
+export function getStoredToken(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return localStorage.getItem(TOKEN_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function storeToken(token: string) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(TOKEN_KEY, token);
+  } catch {
+    // ignore
+  }
+}
+
+function clearToken() {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(TOKEN_KEY);
+  } catch {
+    // ignore
+  }
+}
 
 function safeParseUser(): AuthUser | null {
   if (typeof window === "undefined") return null;
@@ -42,87 +84,62 @@ function safeParseUser(): AuthUser | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<AuthUser>;
     if (typeof parsed.email !== "string") return null;
-    if (parsed.role !== "buyer" && parsed.role !== "seller") return null;
     const token = typeof parsed.token === "string" && parsed.token.trim() ? parsed.token : undefined;
-    return { email: parsed.email, role: parsed.role, token };
+    return { ...parsed, email: parsed.email, token };
   } catch {
     return null;
   }
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  // Don't read localStorage during the initial render; it can cause hydration mismatches.
   const [user, setUser] = useState<AuthUser | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
-  const normalizeProfile = useCallback((data: unknown): UserProfile | null => {
-    if (typeof data !== "object" || data === null) return null;
-    const anyData = data as Record<string, unknown>;
-
-    const rootEmail = typeof anyData.email === "string" ? anyData.email.trim() : "";
-    const rootRole = anyData.role === "buyer" || anyData.role === "seller" ? (anyData.role as UserRole) : undefined;
-
-    const userObj = typeof anyData.user === "object" && anyData.user !== null ? (anyData.user as Record<string, unknown>) : null;
-    const dataObj = typeof anyData.data === "object" && anyData.data !== null ? (anyData.data as Record<string, unknown>) : null;
-    const nestedUser =
-      userObj ||
-      (typeof dataObj?.user === "object" && dataObj.user !== null ? (dataObj.user as Record<string, unknown>) : null);
-
-    const nestedEmail = typeof nestedUser?.email === "string" ? (nestedUser.email as string).trim() : "";
-    const nestedRole = nestedUser?.role === "buyer" || nestedUser?.role === "seller" ? (nestedUser.role as UserRole) : undefined;
-
-    const email = rootEmail || nestedEmail;
-    if (!email) return null;
-
-    const name =
-      (typeof anyData.name === "string" && anyData.name.trim() ? (anyData.name as string) : undefined) ??
-      (typeof nestedUser?.name === "string" && (nestedUser.name as string).trim() ? (nestedUser.name as string) : undefined);
-
-    const imageUrl =
-      (typeof anyData.imageUrl === "string" && anyData.imageUrl.trim() ? (anyData.imageUrl as string) : undefined) ??
-      (typeof nestedUser?.imageUrl === "string" && (nestedUser.imageUrl as string).trim()
-        ? (nestedUser.imageUrl as string)
-        : undefined);
-
-    return {
-      email,
-      role: rootRole ?? nestedRole,
-      ...(name ? { name } : {}),
-      ...(imageUrl ? { imageUrl } : {}),
-    };
-  }, []);
-
-  const fetchProfile = useCallback(
-    async (jwt: string) => {
-      const resp = await axiosClient.get("/users/me", {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-          Accept: "application/json",
-        },
+  const fetchProfile = useCallback(async (token: string): Promise<UserProfile | null> => {
+    try {
+      const resp = await axiosClient.get("/auth/profile", {
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
         timeout: 15000,
       });
-
-      const next = normalizeProfile(resp.data);
-      if (next) setProfile(next);
-      return next;
-    },
-    [normalizeProfile]
-  );
+      const data = (resp.data ?? {}) as Record<string, unknown>;
+      if (typeof data.email === "string") {
+        const prof: UserProfile = {
+          id: typeof data.id === "string" ? data.id : undefined,
+          email: data.email,
+          role: (() => {
+            const r = data.role;
+            if (r === "admin") return "seller" as UserProfile["role"];
+            if (r === "user" || r === "buyer" || r === "seller") return r as UserProfile["role"];
+            return undefined;
+          })(),
+          verified: typeof data.verified === "string" ? data.verified : undefined,
+          createdAt: typeof data.createdAt === "number" ? data.createdAt : undefined,
+          updatedAt: typeof data.updatedAt === "number" ? data.updatedAt : undefined,
+        };
+        setProfile(prof);
+        return prof;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+  }, []);
 
   useEffect(() => {
     const load = () => {
       setUser(safeParseUser());
       setHydrated(true);
+      const token = typeof window !== "undefined" ? localStorage.getItem(TOKEN_KEY) : null;
+      if (token) void fetchProfile(token);
     };
 
-    // Defer state update to avoid synchronous setState in effect.
     if (typeof queueMicrotask === "function") {
       queueMicrotask(load);
     } else {
       void Promise.resolve().then(load);
     }
-  }, []);
+  }, [fetchProfile]);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -137,65 +154,89 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [hydrated, user]);
 
-  const login = useCallback(async ({ email, password, role }: LoginInput) => {
+  const login = useCallback(async ({ email, password }: LoginInput): Promise<LoginResult> => {
     const normalizedEmail = email.trim().toLowerCase();
 
     try {
       const resp = await axiosClient.post(
         "/auth/login",
-        { email: normalizedEmail, password, role },
+        { email: normalizedEmail, password },
         { headers: { "Content-Type": "application/json" }, timeout: 15000 }
       );
 
-      const data = resp.data as unknown;
-      const anyData = (data ?? {}) as Record<string, unknown>;
+      const data = (resp.data ?? {}) as Record<string, unknown>;
 
-      const tokenCandidate =
-        (typeof anyData.token === "string" && anyData.token) ||
-        (typeof anyData.accessToken === "string" && anyData.accessToken) ||
-        (typeof anyData.jwt === "string" && anyData.jwt) ||
-        undefined;
+      const token =
+        (typeof data.accessToken === "string" && data.accessToken.trim() ? data.accessToken : null) ||
+        (typeof data.token === "string" && data.token.trim() ? data.token : null) ||
+        (typeof data.jwt === "string" && data.jwt.trim() ? data.jwt : null) ||
+        null;
 
-      const userCandidate =
-        (typeof anyData.user === "object" && anyData.user !== null ? (anyData.user as Record<string, unknown>) : null) ||
-        (typeof anyData.data === "object" && anyData.data !== null
-          ? ((anyData.data as Record<string, unknown>).user as Record<string, unknown> | undefined) ?? null
-          : null);
+      const userId =
+        (typeof data.userId === "string" && data.userId.trim() ? data.userId : null) ||
+        (typeof data.id === "string" && data.id.trim() ? data.id : null) ||
+        null;
 
-      const apiEmail = typeof userCandidate?.email === "string" ? userCandidate.email : undefined;
-      const apiRole = userCandidate?.role === "buyer" || userCandidate?.role === "seller" ? userCandidate.role : undefined;
+      const apiEmail = typeof data.email === "string" ? data.email.trim() : normalizedEmail;
 
       const nextUser: AuthUser = {
-        email: (apiEmail ?? normalizedEmail).trim(),
-        role: apiRole ?? role,
-        ...(tokenCandidate ? { token: tokenCandidate } : {}),
+        email: apiEmail,
+        ...(token ? { token } : {}),
+        ...(userId ? { id: userId } : {}),
       };
 
       setUser(nextUser);
 
-      if (tokenCandidate) {
-        void fetchProfile(tokenCandidate).catch(() => {
-          // ignore; user is still considered logged in
-        });
+      if (token) {
+        storeToken(token);
+        void fetchProfile(token);
       }
-      return nextUser;
+
+      // Persist email + userId in sessionStorage for OTP verification step
+      if (typeof window !== "undefined") {
+        try {
+          sessionStorage.setItem("sweethomes_otp_email", apiEmail);
+          if (userId) sessionStorage.setItem("sweethomes_otp_userId", userId);
+        } catch {
+          // ignore
+        }
+      }
+
+      return { requiresOtp: true, userId: userId ?? undefined, email: apiEmail };
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         const status = err.response?.status;
-        if (status === 401 || status === 403) {
-          throw new Error("INVALID_CREDENTIALS");
-        }
+        if (status === 401 || status === 403) throw new Error("INVALID_CREDENTIALS");
+        const msg = (err.response?.data as { message?: string } | undefined)?.message;
+        if (msg) throw new Error(msg);
       }
       throw err instanceof Error ? err : new Error("LOGIN_FAILED");
     }
   }, [fetchProfile]);
 
+  const refreshProfile = useCallback(async () => {
+    const token = getStoredToken();
+    if (token) await fetchProfile(token);
+  }, [fetchProfile]);
+
   const logout = useCallback(() => {
     setUser(null);
     setProfile(null);
+    clearToken();
+    if (typeof window !== "undefined") {
+      try {
+        sessionStorage.removeItem("sweethomes_otp_email");
+        sessionStorage.removeItem("sweethomes_otp_userId");
+      } catch {
+        // ignore
+      }
+    }
   }, []);
 
-  const value = useMemo<AuthContextValue>(() => ({ user, profile, login, logout }), [login, logout, profile, user]);
+  const value = useMemo<AuthContextValue>(
+    () => ({ user, profile, login, logout, refreshProfile }),
+    [login, logout, profile, refreshProfile, user]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

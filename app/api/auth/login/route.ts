@@ -31,19 +31,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Invalid JSON body" }, { status: 400 });
   }
 
-  const parsed = body as Partial<{ email: unknown; password: unknown; role: unknown }>;
+  const parsed = body as Partial<{ email: unknown; password: unknown }>;
   const email = typeof parsed.email === "string" ? parsed.email.trim() : "";
   const password = typeof parsed.password === "string" ? parsed.password : "";
-  const role = parsed.role === "buyer" || parsed.role === "seller" ? parsed.role : null;
 
-  if (!email || !password || !role) {
-    return NextResponse.json({ message: "email, password and role are required" }, { status: 400 });
+  if (!email || !password) {
+    return NextResponse.json({ message: "email and password are required" }, { status: 400 });
   }
 
   try {
     const resp = await axiosServer.post(
       "/auth/login",
-      { email, password, role },
+      { email, password },
       { headers: { "Content-Type": "application/json" } }
     );
 

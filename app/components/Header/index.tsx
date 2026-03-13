@@ -15,6 +15,12 @@ const Header = () => {
 
   const displayEmail = profile?.email ?? user?.email;
   const displayRole = profile?.role ?? user?.role;
+  const roleLabel =
+    displayRole === "buyer" || displayRole === "user" ? t("auth.buyer") :
+    displayRole === "seller" || displayRole === "admin" ? t("auth.seller") :
+    null;
+  const avatarLetter = (profile?.email ?? user?.email ?? "?").charAt(0).toUpperCase();
+  const avatarImageUrl = profile?.imageUrl ?? null;
 
   return (
     <header className="sticky top-0 z-50 border-b border-base-200/70 bg-base-100/70 backdrop-blur">
@@ -47,7 +53,7 @@ const Header = () => {
 
         <div className="flex items-center gap-2">
           {/* Seller: My properties */}
-          {user?.role === "seller" ? (
+          {displayRole === "seller" ? (
             <Link
               href={PATHS.sellerProperties}
               className="btn btn-ghost btn-sm hidden md:inline-flex"
@@ -170,60 +176,61 @@ const Header = () => {
           {user ? (
             <div className="dropdown dropdown-end hidden md:inline-flex">
               <button
-                className="btn btn-ghost btn-sm"
+                className="btn btn-ghost btn-sm btn-circle"
                 type="button"
                 tabIndex={0}
                 aria-label={t("auth.account")}
-                title={t("auth.account")}
+                title={displayEmail}
               >
-                <span className="max-w-48 truncate">{displayEmail}</span>
-                {displayRole ? (
-                  <span className="badge badge-outline badge-sm ml-2">
-                    {t(displayRole === "buyer" ? "auth.buyer" : "auth.seller")}
-                  </span>
-                ) : null}
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                  className="ml-1 opacity-70"
-                >
-                  <path
-                    d="M6 9l6 6 6-6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                {avatarImageUrl ? (
+                  <img
+                    src={avatarImageUrl}
+                    alt={avatarLetter}
+                    className="h-8 w-8 rounded-full object-cover"
                   />
-                </svg>
+                ) : (
+                  <div className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-content text-sm font-bold select-none">
+                    {avatarLetter}
+                  </div>
+                )}
               </button>
 
               <div
                 tabIndex={0}
                 className="dropdown-content z-60 mt-2 w-72 rounded-2xl border border-base-200 bg-base-100 p-2 shadow-xl"
               >
-                <div className="px-2 py-2 text-xs font-semibold opacity-70">
-                  {t("auth.signedInAs")}
-                </div>
-                <div className="px-2 pb-2 text-sm">
-                  <div className="font-medium truncate">{displayEmail}</div>
-                  {displayRole ? (
-                    <div className="mt-1 text-xs opacity-70">
-                      {t("auth.role")}:{" "}
-                      {t(
-                        displayRole === "buyer" ? "auth.buyer" : "auth.seller",
-                      )}
+                {/* Profile header */}
+                <div className="flex items-center gap-3 px-2 py-3">
+                  {avatarImageUrl ? (
+                    <img
+                      src={avatarImageUrl}
+                      alt={avatarLetter}
+                      className="h-10 w-10 rounded-full object-cover shrink-0"
+                    />
+                  ) : (
+                    <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-primary-content text-base font-bold shrink-0 select-none">
+                      {avatarLetter}
                     </div>
-                  ) : null}
+                  )}
+                  <div className="min-w-0">
+                    <div className="text-sm font-medium truncate">{displayEmail}</div>
+                    {roleLabel ? (
+                      <div className="text-xs opacity-60 mt-0.5">{roleLabel}</div>
+                    ) : null}
+                  </div>
                 </div>
 
                 <div className="divider my-1" />
 
-                <button
+                <Link
                   className="btn btn-ghost btn-sm w-full justify-start"
+                  href={PATHS.profile}
+                >
+                  {t("nav.viewProfile")}
+                </Link>
+
+                <button
+                  className="btn btn-ghost btn-sm w-full justify-start text-error hover:bg-error/10"
                   type="button"
                   onClick={logout}
                 >
@@ -295,7 +302,7 @@ const Header = () => {
 
               <div className="divider my-1" />
 
-              {user?.role === "seller" ? (
+              {displayRole === "seller" ? (
                 <Link
                   className="btn btn-ghost btn-sm w-full justify-start"
                   href={PATHS.sellerProperties}
@@ -323,29 +330,55 @@ const Header = () => {
               <div className="divider my-1" />
 
               {user ? (
-                <button
-                  className="btn btn-ghost btn-sm w-full justify-start"
-                  type="button"
-                  onClick={logout}
-                >
-                  {t("actions.logout")}
-                </button>
+                <>
+                  {/* Mobile avatar info */}
+                  <div className="flex items-center gap-3 px-2 py-2">
+                    {avatarImageUrl ? (
+                      <img
+                        src={avatarImageUrl}
+                        alt={avatarLetter}
+                        className="h-9 w-9 rounded-full object-cover shrink-0"
+                      />
+                    ) : (
+                      <div className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-content text-sm font-bold shrink-0 select-none">
+                        {avatarLetter}
+                      </div>
+                    )}
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium truncate">{displayEmail}</div>
+                      {roleLabel ? <div className="text-xs opacity-60">{roleLabel}</div> : null}
+                    </div>
+                  </div>
+                  <Link
+                    className="btn btn-ghost btn-sm w-full justify-start"
+                    href={PATHS.profile}
+                  >
+                    {t("nav.viewProfile")}
+                  </Link>
+                  <button
+                    className="btn btn-ghost btn-sm w-full justify-start text-error hover:bg-error/10"
+                    type="button"
+                    onClick={logout}
+                  >
+                    {t("actions.logout")}
+                  </button>
+                </>
               ) : (
-                <Link
-                  className="btn btn-ghost btn-sm w-full justify-start"
-                  href={PATHS.login}
-                >
-                  {t("actions.login")}
-                </Link>
+                <>
+                  <Link
+                    className="btn btn-ghost btn-sm w-full justify-start"
+                    href={PATHS.login}
+                  >
+                    {t("actions.login")}
+                  </Link>
+                  <Link
+                    className="btn btn-primary btn-sm w-full justify-start"
+                    href={PATHS.register}
+                  >
+                    {t("actions.getStarted")}
+                  </Link>
+                </>
               )}
-              {!user ? (
-                <Link
-                  className="btn btn-primary btn-sm w-full justify-start"
-                  href={PATHS.register}
-                >
-                  {t("actions.getStarted")}
-                </Link>
-              ) : null}
             </div>
           </div>
         </div>

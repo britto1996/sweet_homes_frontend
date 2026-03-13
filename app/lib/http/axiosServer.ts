@@ -3,7 +3,6 @@ import axios from "axios";
 function getServerBaseUrl() {
   return (
     process.env.BASE_URL_SERVER ||
-    process.env.NEXT_PUBLIC_BASE_URL ||
     "http://localhost:8000"
   );
 }

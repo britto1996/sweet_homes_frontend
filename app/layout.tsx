@@ -5,6 +5,7 @@ import { I18nProvider } from "./components/I18n/I18nProvider";
 import { CartProvider } from "./components/Cart/CartProvider";
 import { WishlistProvider } from "./components/Wishlist/WishlistProvider";
 import { AuthProvider } from "./components/Auth/AuthProvider";
+import { ToastProvider } from "./components/UI/Toast";
 import Header from "./components/Header";
 import { SellerPropertiesProvider } from "./components/Seller/SellerPropertiesProvider";
 
@@ -35,14 +36,16 @@ export default function RootLayout({
       >
         <I18nProvider>
           <AuthProvider>
-            <CartProvider>
-              <WishlistProvider>
-                <SellerPropertiesProvider>
-                  <Header />
-                  {children}
-                </SellerPropertiesProvider>
-              </WishlistProvider>
-            </CartProvider>
+            <ToastProvider>
+              <CartProvider>
+                <WishlistProvider>
+                  <SellerPropertiesProvider>
+                    <Header />
+                    {children}
+                  </SellerPropertiesProvider>
+                </WishlistProvider>
+              </CartProvider>
+            </ToastProvider>
           </AuthProvider>
         </I18nProvider>
       </body>

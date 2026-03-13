@@ -9,7 +9,8 @@
     "reviews": "التقييمات",
     "cart": "السلة",
     "wishlist": "المفضلة",
-    "myProperties": "عقاراتي"
+    "myProperties": "عقاراتي",
+    "viewProfile": "عرض الملف الشخصي"
   },
   "seller": {
     "title": "عقاراتي",
@@ -79,7 +80,8 @@
     "haveAccount": "لديك حساب بالفعل؟",
 
     "registering": "جارٍ إنشاء الحساب…",
-    "registerMockSuccess": "تم إنشاء الحساب. جارٍ تحويلك…",
+    "registerSuccess": "تم إنشاء الحساب! يرجى التحقق من بريدك الإلكتروني.",
+    "loginSuccess": "تم تسجيل الدخول بنجاح!",
 
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "you@example.com",
@@ -93,7 +95,6 @@
     "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
 
     "forgotPassword": "نسيت كلمة المرور؟",
-    "forgotPasswordMock": "استعادة كلمة المرور غير متصلة بعد (تجريبي).",
 
     "role": "مشتري / بائع",
     "buyer": "مشتري",
@@ -104,7 +105,42 @@
     "passwordNotStrong": "غير قوية",
 
     "loggingIn": "جارٍ تسجيل الدخول…",
-    "mockHint": "مستخدمون تجريبيون: buyer@sweethomes.test أو seller@sweethomes.test • كلمة المرور: SweetHomes@123",
+
+    "otp": {
+      "title": "تحقق من بريدك الإلكتروني",
+      "subtitle": "أدخل الرمز المكوّن من 6 أرقام المرسل إلى بريدك الإلكتروني.",
+      "label": "رمز التحقق",
+      "placeholder": "أدخل رمز OTP",
+      "submit": "تحقق",
+      "verifying": "جارٍ التحقق…",
+      "resend": "إعادة إرسال الرمز",
+      "resending": "جارٍ الإرسال…",
+      "resendSuccess": "تم إرسال رمز جديد.",
+      "success": "تم التحقق من البريد الإلكتروني! جارٍ التحويل…",
+      "required": "رمز OTP مطلوب.",
+      "minLength": "يجب أن يكون رمز OTP 4 أحرف على الأقل."
+    },
+
+    "forgotPasswordTitle": "إعادة تعيين كلمة المرور",
+    "forgotPasswordSubtitle": "أدخل بريدك الإلكتروني لتلقي رمز الإعادة.",
+    "sendOtp": "إرسال رمز OTP",
+    "sendingOtp": "جارٍ الإرسال…",
+    "otpSent": "تم إرسال رمز OTP! تحقق من بريدك.",
+    "newPassword": "كلمة المرور الجديدة",
+    "newPasswordPlaceholder": "أدخل كلمة مرور جديدة",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "resettingPassword": "جارٍ الإعادة…",
+    "resetPasswordSuccess": "تمت إعادة تعيين كلمة المرور بنجاح. يرجى تسجيل الدخول.",
+
+    "profile": {
+      "title": "ملفي الشخصي",
+      "id": "معرّف المستخدم",
+      "email": "البريد الإلكتروني",
+      "role": "الدور",
+      "verified": "الحالة",
+      "createdAt": "عضو منذ",
+      "edit": "تعديل الملف"
+    },
 
     "errors": {
       "emailRequired": "البريد الإلكتروني مطلوب.",
@@ -113,7 +149,9 @@
       "passwordWeak": "يجب أن تكون كلمة المرور قوية (8+، حرف كبير/صغير، رقم، رمز، بدون مسافات).",
       "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب.",
       "passwordsDontMatch": "كلمتا المرور غير متطابقتين.",
-      "invalidCredentials": "بيانات الدخول/الدور غير صحيحة.",
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+      "otpRequired": "رمز OTP مطلوب.",
+      "newPasswordRequired": "كلمة المرور الجديدة مطلوبة.",
       "generic": "حدث خطأ ما. حاول مرة أخرى."
     }
   },

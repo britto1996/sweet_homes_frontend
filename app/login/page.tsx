@@ -1,30 +1,30 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useMemo, useState } from "react";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 
 import Card from "../components/UI/Card";
-import RoleSwitch, { type UserRole } from "../components/UI/RoleSwitch";
 import { useI18n } from "../components/I18n/I18nProvider";
 import { useAuth } from "../components/Auth/AuthProvider";
+import { useToast } from "../components/UI/Toast";
 import { useReusableFormik } from "../lib/forms/useReusableFormik";
-import { checkStrongPassword } from "../lib/validation/password";
 import { PATHS } from "@/constants/path";
+import { axiosClient } from "@/app/lib/http/axiosClient";
+import axios from "axios";
 
 type Values = {
   email: string;
   password: string;
-  role: UserRole;
 };
 
 export default function LoginPage() {
   const { t } = useI18n();
   const { user, login } = useAuth();
+  const { showToast } = useToast();
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [authError, setAuthError] = useState<string | null>(null);
 
   const schema = useMemo(() => {
     return Yup.object({
@@ -32,34 +32,35 @@ export default function LoginPage() {
         .trim()
         .email(t("auth.errors.emailInvalid"))
         .required(t("auth.errors.emailRequired")),
-      password: Yup.string()
-        .required(t("auth.errors.passwordRequired")),
-      role: Yup.mixed<UserRole>().oneOf(["buyer", "seller"]).required(),
+      password: Yup.string().required(t("auth.errors.passwordRequired")),
     });
   }, [t]);
 
   const formik = useReusableFormik<Values>({
-    initialValues: { email: "", password: "", role: "buyer" },
+    initialValues: { email: "", password: "" },
     validationSchema: schema,
     onSubmit: async (values, helpers) => {
-      setAuthError(null);
       try {
-        const nextUser = await login(values);
+        const result = await login({ email: values.email, password: values.password });
+        showToast(t("auth.loginSuccess"), "success");
         helpers.resetForm();
         setShowPassword(false);
-        router.push(nextUser.role === "seller" ? PATHS.sellerProperties : PATHS.home);
-      } catch {
-        setAuthError(t("auth.errors.invalidCredentials"));
+        if (result.requiresOtp) {
+          router.push(PATHS.verifyOtp);
+        } else {
+          router.push(PATHS.home);
+        }
+      } catch (err: unknown) {
+        const msg =
+          err instanceof Error && err.message !== "INVALID_CREDENTIALS" && err.message !== "LOGIN_FAILED"
+            ? err.message
+            : t("auth.errors.invalidCredentials");
+        showToast(msg, "error");
       } finally {
         helpers.setSubmitting(false);
       }
     },
   });
-
-  const pwdCheck = useMemo(
-    () => checkStrongPassword(formik.values.password),
-    [formik.values.password]
-  );
 
   const emailHasError = Boolean(formik.touched.email && formik.errors.email);
   const passwordHasError = Boolean(formik.touched.password && formik.errors.password);
@@ -68,9 +69,7 @@ export default function LoginPage() {
     "input input-bordered w-full bg-base-100 border-2 border-primary/60 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none";
 
   useEffect(() => {
-    if (user) {
-      router.replace(PATHS.home);
-    }
+    if (user) router.replace(PATHS.home);
   }, [user, router]);
 
   if (user) {
@@ -96,6 +95,27 @@ export default function LoginPage() {
       </svg>
     </div>
   );
+
+  const handleForgotPassword = async () => {
+    const email = formik.values.email.trim();
+    if (!email) {
+      showToast(t("auth.errors.emailRequired"), "warning");
+      return;
+    }
+    try {
+      await axiosClient.post("/auth/resend-otp", { email }, { timeout: 15000 });
+      showToast(t("auth.otpSent"), "success");
+      if (typeof window !== "undefined") {
+        try { sessionStorage.setItem("sweethomes_forgot_email", email); } catch { /* ignore */ }
+      }
+      router.push(PATHS.forgotPassword);
+    } catch (err: unknown) {
+      const msg = axios.isAxiosError(err)
+        ? ((err.response?.data as { message?: string } | undefined)?.message ?? t("auth.errors.generic"))
+        : t("auth.errors.generic");
+      showToast(msg, "error");
+    }
+  };
 
   return (
     <main className="relative min-h-[calc(100vh-64px)] sweethomes-hero overflow-hidden text-base-content">
@@ -138,7 +158,7 @@ export default function LoginPage() {
               aria-label={t("actions.back")}
               title={t("actions.back")}
             >
-              ← {t("actions.back")}
+              â† {t("actions.back")}
             </button>
           </div>
 
@@ -156,16 +176,13 @@ export default function LoginPage() {
           <form onSubmit={formik.handleSubmit} className="grid gap-4">
             {/* Email */}
             <div className="grid gap-1">
-              <div className="flex items-center justify-between gap-2">
-                <div className="text-sm font-medium">{t("auth.email")}</div>
-              </div>
-
+              <div className="text-sm font-medium">{t("auth.email")}</div>
               <div className="relative">
                 <input
                   name="email"
                   type="email"
                   className={
-                    `${inputBase} pr-10 ` +
+                    `${inputBase} pr-10` +
                     (emailHasError ? " input-error border-error focus:border-error focus:ring-error/20" : "")
                   }
                   placeholder={t("auth.emailPlaceholder")}
@@ -176,40 +193,34 @@ export default function LoginPage() {
                   inputMode="email"
                 />
                 <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
+                  width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"
                   className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 opacity-60"
                 >
                   <path d="M4 6h16v12H4V6Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
                   <path d="m4 7 8 6 8-6" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
                 </svg>
               </div>
-
               {emailHasError ? <div className="text-xs text-error">{formik.errors.email}</div> : null}
             </div>
 
-            {/* Password (bordered + forgot on right) */}
+            {/* Password */}
             <div className="grid gap-1">
               <div className="flex items-center justify-between gap-2">
                 <div className="text-sm font-medium">{t("auth.password")}</div>
                 <button
                   type="button"
                   className="link link-primary text-xs"
-                  onClick={() => alert(t("auth.forgotPasswordMock"))}
+                  onClick={handleForgotPassword}
                 >
                   {t("auth.forgotPassword")}
                 </button>
               </div>
-
               <div className="relative">
                 <input
                   name="password"
                   type={showPassword ? "text" : "password"}
                   className={
-                    `${inputBase} pr-12 ` +
+                    `${inputBase} pr-12` +
                     (passwordHasError ? " input-error border-error focus:border-error focus:ring-error/20" : "")
                   }
                   placeholder={t("auth.passwordPlaceholder")}
@@ -224,76 +235,31 @@ export default function LoginPage() {
                   onClick={() => setShowPassword((s) => !s)}
                   aria-label={showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
                   title={showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
+                  tabIndex={-1}
                 >
                   {showPassword ? (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                       <path d="M3 3l18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                      <path
-                        d="M10.6 10.6a3 3 0 0 0 4.2 4.2"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M9.9 5.2A10.6 10.6 0 0 1 12 5c6.2 0 10 7 10 7a17.7 17.7 0 0 1-3 3.8"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M6.2 6.2A17.7 17.7 0 0 0 2 12s3.8 7 10 7c1 0 2-.2 3-.5"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
+                      <path d="M10.6 10.6a3 3 0 0 0 4.2 4.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M9.9 5.2A10.6 10.6 0 0 1 12 5c6.2 0 10 7 10 7a17.7 17.7 0 0 1-3 3.8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M6.2 6.2A17.7 17.7 0 0 0 2 12s3.8 7 10 7c1 0 2-.2 3-.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     </svg>
                   ) : (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path
-                        d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7S2 12 2 12Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinejoin="round"
-                      />
+                      <path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7S2 12 2 12Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                      <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
                     </svg>
                   )}
                 </button>
               </div>
-
-              <div className="text-xs opacity-70">
-                {t("auth.passwordHint")}
-                <span className={`ml-2 ${pwdCheck.ok ? "text-success" : "text-warning"}`}>
-                  {pwdCheck.ok ? t("auth.passwordStrong") : t("auth.passwordNotStrong")}
-                </span>
-              </div>
-
               {passwordHasError ? <div className="text-xs text-error">{formik.errors.password}</div> : null}
             </div>
 
-            {/* Buyer / Seller */}
-            <div className="grid gap-1">
-              <div className="rounded-2xl border-2 border-primary/40 overflow-hidden bg-base-100">
-                <div className="bg-primary/5 px-4 py-2 text-sm font-medium">{t("auth.role")}</div>
-                <div className="px-4 py-3">
-                  <RoleSwitch
-                    value={formik.values.role}
-                    onChange={(role) => formik.setFieldValue("role", role)}
-                    labels={{ buyer: t("auth.buyer"), seller: t("auth.seller") }}
-                    showBrandIcon
-                  />
-                </div>
-              </div>
-            </div>
-
-            {authError ? <div className="alert alert-error text-sm">{authError}</div> : null}
-
-            <button type="submit" className="btn btn-primary w-full" disabled={formik.isSubmitting}>
+            <button
+              type="submit"
+              className="btn btn-primary w-full"
+              disabled={formik.isSubmitting}
+            >
               {formik.isSubmitting ? (
                 <span className="inline-flex items-center gap-2">
                   <span className="loading loading-spinner loading-sm" />
@@ -309,3 +275,4 @@ export default function LoginPage() {
     </main>
   );
 }
+
