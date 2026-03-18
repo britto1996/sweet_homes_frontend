@@ -2,8 +2,8 @@ import axios from "axios";
 
 function getServerBaseUrl() {
   return (
-    process.env.BASE_URL_SERVER ||
-    "http://localhost:8000"
+    process.env.SERVER_PRODUCTION_URL ||
+    "https://sweet-homes-user-auth-be.onrender.com/api"
   );
 }
 

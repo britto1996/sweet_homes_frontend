@@ -122,15 +122,17 @@
     },
 
     "forgotPasswordTitle": "Reset password",
-    "forgotPasswordSubtitle": "Enter your email to receive a reset code.",
-    "sendOtp": "Send OTP",
+    "forgotPasswordSubtitle": "Enter your email to receive a password reset link.",
+    "sendOtp": "Send Reset Password Link",
     "sendingOtp": "Sending…",
-    "otpSent": "OTP sent! Check your email.",
+    "otpSent": "Reset link sent! Check your email.",
+    "checkEmailWaiting": "We sent a reset link to your email. Click the link to set your new password and you'll be logged in automatically.",
+    "loggingInAfterReset": "Logging you in…",
     "newPassword": "New password",
     "newPasswordPlaceholder": "Enter new password",
     "resetPassword": "Reset password",
     "resettingPassword": "Resetting…",
-    "resetPasswordSuccess": "Password reset successfully. Please log in.",
+    "resetPasswordSuccess": "Password reset successfully!",
 
     "profile": {
       "title": "My Profile",

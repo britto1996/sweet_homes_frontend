@@ -7,6 +7,7 @@ import axios from "axios";
 
 import Card from "../components/UI/Card";
 import { useI18n } from "../components/I18n/I18nProvider";
+import { useAuth } from "../components/Auth/AuthProvider";
 import { useToast } from "../components/UI/Toast";
 import { useReusableFormik } from "../lib/forms/useReusableFormik";
 import { strongPasswordRegex } from "../lib/validation/password";
@@ -16,6 +17,7 @@ import { axiosClient } from "@/app/lib/http/axiosClient";
 function ResetPasswordForm() {
   const { t } = useI18n();
   const { showToast } = useToast();
+  const { login } = useAuth();
   const router = useRouter();
   const params = useSearchParams();
 
@@ -24,6 +26,7 @@ function ResetPasswordForm() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [done, setDone] = useState(false);
+  const [loggingIn, setLoggingIn] = useState(false);
 
   const formik = useReusableFormik<{ newPassword: string }>({
     initialValues: { newPassword: "" },
@@ -46,7 +49,17 @@ function ResetPasswordForm() {
         );
         showToast(t("auth.resetPasswordSuccess"), "success");
         setDone(true);
-        setTimeout(() => router.push(PATHS.login), 1200);
+        // Auto-login with the new credentials and redirect to home
+        setLoggingIn(true);
+        try {
+          await login({ email, password: values.newPassword });
+          router.push(PATHS.home);
+        } catch {
+          // If auto-login fails, fall back to the login page
+          setTimeout(() => router.push(PATHS.login), 1200);
+        } finally {
+          setLoggingIn(false);
+        }
       } catch (err: unknown) {
         const msg = axios.isAxiosError(err)
           ? ((err.response?.data as { message?: string } | undefined)?.message ?? t("auth.errors.generic"))
@@ -136,8 +149,16 @@ function ResetPasswordForm() {
           </div>
 
           {done ? (
-            <div className="rounded-xl bg-success/10 border border-success/30 px-4 py-4 text-sm text-success text-center">
-              {t("auth.resetPasswordSuccess")}
+            <div className="grid gap-4 place-items-center py-4 text-center">
+              <div className="rounded-xl bg-success/10 border border-success/30 px-4 py-4 text-sm text-success w-full">
+                {t("auth.resetPasswordSuccess")}
+              </div>
+              {loggingIn && (
+                <div className="flex items-center gap-3 text-sm opacity-70">
+                  <span className="loading loading-spinner loading-sm" />
+                  {t("auth.loggingInAfterReset")}
+                </div>
+              )}
             </div>
           ) : (
             <form onSubmit={formik.handleSubmit} className="grid gap-4">

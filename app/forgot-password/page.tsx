@@ -105,13 +105,33 @@ export default function ForgotPasswordPage() {
           </div>
 
           {sent ? (
-            <div className="grid gap-4">
-              <div className="rounded-xl bg-success/10 border border-success/30 px-4 py-4 text-sm text-success">
-                {t("auth.otpSent")}
+            <div className="grid gap-5 py-2">
+              {/* Animated waiting indicator */}
+              <div className="flex flex-col items-center gap-3 pt-2">
+                <div className="relative h-16 w-16">
+                  <div className="absolute inset-0 rounded-full border-4 border-primary/20" />
+                  <div className="absolute inset-0 animate-spin rounded-full border-4 border-transparent border-t-primary" />
+                  <div className="absolute inset-0 grid place-items-center text-primary">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M4 6h16v12H4V6Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                      <path d="m4 7 8 6 8-6" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="text-sm font-semibold">{t("auth.otpSent")}</div>
               </div>
-              <p className="text-sm opacity-70 text-center">
-                {t("auth.forgotPasswordSubtitle")}
+
+              {/* Email sent to */}
+              <div className="rounded-xl bg-base-200/70 px-4 py-3 text-sm text-center">
+                <span className="opacity-60">{t("auth.email")}:</span>{" "}
+                <span className="font-medium">{formik.values.email}</span>
+              </div>
+
+              {/* Hint */}
+              <p className="text-xs text-center opacity-60 leading-relaxed">
+                {t("auth.checkEmailWaiting")}
               </p>
+
               <button
                 type="button"
                 className="btn btn-ghost btn-sm w-full"
