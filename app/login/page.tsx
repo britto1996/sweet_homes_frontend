@@ -10,8 +10,6 @@ import { useAuth } from "../components/Auth/AuthProvider";
 import { useToast } from "../components/UI/Toast";
 import { useReusableFormik } from "../lib/forms/useReusableFormik";
 import { PATHS } from "@/constants/path";
-import { axiosClient } from "@/app/lib/http/axiosClient";
-import axios from "axios";
 
 type Values = {
   email: string;
@@ -96,25 +94,8 @@ export default function LoginPage() {
     </div>
   );
 
-  const handleForgotPassword = async () => {
-    const email = formik.values.email.trim();
-    if (!email) {
-      showToast(t("auth.errors.emailRequired"), "warning");
-      return;
-    }
-    try {
-      await axiosClient.post("/auth/resend-otp", { email }, { timeout: 15000 });
-      showToast(t("auth.otpSent"), "success");
-      if (typeof window !== "undefined") {
-        try { sessionStorage.setItem("sweethomes_forgot_email", email); } catch { /* ignore */ }
-      }
-      router.push(PATHS.forgotPassword);
-    } catch (err: unknown) {
-      const msg = axios.isAxiosError(err)
-        ? ((err.response?.data as { message?: string } | undefined)?.message ?? t("auth.errors.generic"))
-        : t("auth.errors.generic");
-      showToast(msg, "error");
-    }
+  const handleForgotPassword = () => {
+    router.push(PATHS.forgotPassword);
   };
 
   return (
